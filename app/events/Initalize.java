@@ -1,21 +1,16 @@
 package events;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import akka.actor.ActorRef;
-import demo.CheckMoveLogic;
-import demo.CommandDemo;
-import structures.GameState;
-//byLuo
+import com.fasterxml.jackson.databind.JsonNode;
 import commands.BasicCommands;
-import structures.basic.Card;
-import structures.basic.EffectAnimation;
-import structures.basic.Player;
-import structures.basic.Tile;
-import structures.basic.Unit;
-import structures.basic.UnitAnimationType;
+import structures.GameState;
+import structures.basic.*;
 import utils.BasicObjectBuilders;
+import utils.OrderedCardLoader;
 import utils.StaticConfFiles;
+
+import java.util.List;
+import java.util.Random;
 
 /**
  * Indicates that both the core game loop in the browser is starting, meaning
@@ -33,6 +28,11 @@ import utils.StaticConfFiles;
  *
  */
 public class Initalize implements EventProcessor {
+
+	public static boolean endaTurn;
+	boolean endTurn = false;
+	static Player humanPlayer;
+	static Player aiPlayer;
 	static Tile tile00,tile01,tile02,tile03,tile04,tile10,tile11,tile12,tile13,tile14,tile20,tile21,tile22,tile23,tile24;
 	static Tile tile30,tile31,tile32,tile33,tile34,tile40,tile41,tile42,tile43,tile44,tile50,tile51,tile52,tile53,tile54;
 	static Tile tile60,tile61,tile62,tile63,tile64,tile70,tile71,tile72,tile73,tile74,tile80,tile81,tile82,tile83,tile84;
@@ -49,10 +49,29 @@ public class Initalize implements EventProcessor {
 		//CheckMoveLogic.executeDemo(out);
 
 
-		initAllTile(out);//by Luo
-		initPlayer(out);//by Luo
+//		initAllTile(out);//by Luo
+//		initPlayer(out);//by Luo
+//		drawCard(out);//by Luo//第一回合从牌堆抽取三张卡
+		initBoard(out,gameState,message);//by Luo
 
 
+	}
+
+	private static void initBoard(ActorRef out, GameState gameState, JsonNode message) {
+		Board gameBoard = gameState.getBoard();
+		BasicCommands.addPlayer1Notification(out, "initBoard", 2);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		// Draw the board
+		for (int i = 0; i<gameBoard.getBoard().length; i++) {
+			for (int k = 0; k<gameBoard.getBoard()[0].length; k++) {
+				BasicCommands.drawTile(out, gameBoard.getBoard()[i][k], 0);
+			}
+
+		}
 
 	}
 
@@ -181,76 +200,105 @@ public class Initalize implements EventProcessor {
 	//init playerhealth by Luo
 	public static void initPlayer(ActorRef out) {
 		// setPlayer1Health
-		BasicCommands.addPlayer1Notification(out, "setPlayer1Health", 2);
-		Player humanPlayer = new Player(20, 0);
+		BasicCommands.addPlayer1Notification(out, "setPlayer1Health", 1);
+		humanPlayer = new Player(20, 0);
 		BasicCommands.setPlayer1Health(out, humanPlayer);
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
 		// setPlayer2Health
-		BasicCommands.addPlayer1Notification(out, "setPlayer2Health", 2);
-		Player aiPlayer = new Player(20, 0);
+		BasicCommands.addPlayer1Notification(out, "setPlayer2Health", 1);
+		aiPlayer = new Player(20, 0);
 		BasicCommands.setPlayer2Health(out, aiPlayer);
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
+
 		// drawUnit humanAvatar
-		BasicCommands.addPlayer1Notification(out, "drawUnit", 2);
-		Unit unit = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 001, Unit.class);
+		//BasicCommands.addPlayer1Notification(out, "drawUnit", 2);
+		Unit unit = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, -1, Unit.class);
 		unit.setPositionByTile(tile12);
 		BasicCommands.drawUnit(out, unit, tile12);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		//try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 
 		// drawUnit humanAvatar
-		BasicCommands.addPlayer1Notification(out, "drawUnit2", 2);
-		Unit unit2 = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 002, Unit.class);
+		//BasicCommands.addPlayer1Notification(out, "drawUnit2", 2);
+		Unit unit2 = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, -2, Unit.class);
 		unit2.setPositionByTile(tile72);
 		BasicCommands.drawUnit(out, unit2, tile72);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		//try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 
 		// setUnitAttack
-		BasicCommands.addPlayer1Notification(out, "setUnitAttack", 2);
+		//BasicCommands.addPlayer1Notification(out, "setUnitAttack", 2);
 		BasicCommands.setUnitAttack(out, unit, 2);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		//try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 		// setUni2tAttack
-		BasicCommands.addPlayer1Notification(out, "setUnitAttack", 2);
+		//BasicCommands.addPlayer1Notification(out, "setUnitAttack", 2);
 		BasicCommands.setUnitAttack(out, unit2, 2);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		//try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 
 		// setUnitHealth
-		BasicCommands.addPlayer1Notification(out, "setUnit2Health", 2);
+		//BasicCommands.addPlayer1Notification(out, "setUnit2Health", 2);
 		BasicCommands.setUnitHealth(out, unit, 20);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		//try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 		// setUnit2Health
-		BasicCommands.addPlayer1Notification(out, "setUnit2Health", 2);
+		//BasicCommands.addPlayer1Notification(out, "setUnit2Health", 2);
 		BasicCommands.setUnitHealth(out, unit2, 20);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		//try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 
 
-		// Player Hand Test
-		BasicCommands.addPlayer1Notification(out, "Player Hand Test", 2);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 
 
-		// drawCard [1]
-		BasicCommands.addPlayer1Notification(out, "drawCard [1u]", 2);
-		Card hailstone_golem = BasicObjectBuilders.loadCard(StaticConfFiles.c_hailstone_golem, 0, Card.class);
-		BasicCommands.drawCard(out, hailstone_golem, 1, 0);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+//		// Player Hand Test
+//		BasicCommands.addPlayer1Notification(out, "Player Hand Test", 2);
+//		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 
-		// drawCard [1] Highlight
-		BasicCommands.addPlayer1Notification(out, "drawCard [1u] Highlight", 2);
-		BasicCommands.drawCard(out, hailstone_golem, 1, 1);
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+
+//		// drawCard [1]
+//		BasicCommands.addPlayer1Notification(out, "drawCard [1u]", 2);
+//		Card hailstone_golem = BasicObjectBuilders.loadCard(StaticConfFiles.c_hailstone_golem, 0, Card.class);
+//		BasicCommands.drawCard(out, hailstone_golem, 1, 0);
+//		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+//
+//		// drawCard [1] Highlight
+//		BasicCommands.addPlayer1Notification(out, "drawCard [1u] Highlight", 2);
+//		BasicCommands.drawCard(out, hailstone_golem, 1, 1);
+//		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 
 	}
 
+	//第一回合从牌堆抽取三张卡by Luo
+	public static void drawCard(ActorRef out) {
+		//初始化牌堆
+		BasicCommands.addPlayer1Notification(out, "初始化牌堆", 2);
+		List<Card>  cardsInDeck1 = OrderedCardLoader.getPlayer1Cards();
+
+
+		//当点击endtrun时--未实现
+			//判断排队剩余卡的数量
+			if (cardsInDeck1.size() > 0) {
+				//随机抽取三张
+				Random rand = new Random();
+				int numberOfElements = 3;
+
+				for (int i = 0; i < numberOfElements; i++) {
+					int randomIndex = rand.nextInt(cardsInDeck1.size());
+					Card randomCard = cardsInDeck1.get(randomIndex);
+					BasicCommands.drawCard(out, randomCard, i + 1, 0);
+					cardsInDeck1.remove(randomIndex);//将一抽到的卡的索引从牌堆中删除
+
+					System.out.println("Remaining deck size" + cardsInDeck1.size());
+				}
+			}
+
+
+	}
 
 
 
