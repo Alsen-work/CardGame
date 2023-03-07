@@ -31,10 +31,19 @@ public class Player {
 	public int getMana() {
 		return mana;
 	}
-	public void setMana(int mana) {
-		this.mana = mana;
+
+
+	// Add Mana and make maximum value by Luo
+	public void setMana(int addMana) {
+		this.mana = addMana;
+		int newMana = mana + addMana;
+
+		if(newMana > 9) {
+			this.mana = 9;
+		}	else {
+			this.mana = newMana;
+		}
 	}
-	
 	
 	
 }
