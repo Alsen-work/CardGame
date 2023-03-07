@@ -8,10 +8,6 @@ import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Tile;
 import structures.basic.Unit;
-import utils.OrderedCardLoader;
-
-import java.util.List;
-import java.util.Random;
 
 /**
  * Indicates that both the core game loop in the browser is starting, meaning
@@ -27,8 +23,6 @@ import java.util.Random;
  */
 public class Initalize implements EventProcessor {
 
-	public static boolean endaTurn;
-	boolean endTurn = false;
 
 
 	@Override
@@ -45,7 +39,6 @@ public class Initalize implements EventProcessor {
 
 
 
-//		drawCard(out);//by Luo//第一回合从牌堆抽取三张卡
 
 		//set board by Luo
 		initBoard(out,gameState,message);
@@ -65,7 +58,7 @@ public class Initalize implements EventProcessor {
 			e.printStackTrace();
 		}
 
-		Board gameBoard = gameState.getBoard();
+		Board gameBoard = gameState.getBoard();//gamestate里创建board并赋值给gameboard
 
 		// Draw the board
 		for (int i = 0; i<gameBoard.getBoard().length; i++) {
@@ -138,55 +131,28 @@ public class Initalize implements EventProcessor {
 			e.printStackTrace();
 		}
 
-	}
+		//draw Player's hand
+		int i = 0;
 
-
-
-
-//		// Player Hand Test
-//		BasicCommands.addPlayer1Notification(out, "Player Hand Test", 2);
-//		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
-
-
-//		// drawCard [1]
-//		BasicCommands.addPlayer1Notification(out, "drawCard [1u]", 2);
-//		Card hailstone_golem = BasicObjectBuilders.loadCard(StaticConfFiles.c_hailstone_golem, 0, Card.class);
-//		BasicCommands.drawCard(out, hailstone_golem, 1, 0);
-//		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
-//
-//		// drawCard [1] Highlight
-//		BasicCommands.addPlayer1Notification(out, "drawCard [1u] Highlight", 2);
-//		BasicCommands.drawCard(out, hailstone_golem, 1, 1);
-//		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
-
-
-
-	//第一回合从牌堆抽取三张卡by Luo
-	public static void drawCard(ActorRef out) {
-		//初始化牌堆
-		BasicCommands.addPlayer1Notification(out, "初始化牌堆", 2);
-		List<Card>  cardsInDeck1 = OrderedCardLoader.getPlayer1Cards();
-
-
-		//当点击endtrun时--未实现
-			//判断排队剩余卡的数量
-			if (cardsInDeck1.size() > 0) {
-				//随机抽取三张
-				Random rand = new Random();
-				int numberOfElements = 3;
-
-				for (int i = 0; i < numberOfElements; i++) {
-					int randomIndex = rand.nextInt(cardsInDeck1.size());
-					Card randomCard = cardsInDeck1.get(randomIndex);
-					BasicCommands.drawCard(out, randomCard, i + 1, 0);
-					cardsInDeck1.remove(randomIndex);//将一抽到的卡的索引从牌堆中删除
-
-					System.out.println("Remaining deck size" + cardsInDeck1.size());
-				}
-			}
+		for (Card card : gameState.getRoundPlayer().getHand().getHandList()) {
+			BasicCommands.drawCard(out, card, i + 1, 0);
+			BasicCommands.addPlayer1Notification(out, "Draw hand" + i+1, 2);
+			i++;
+		}
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 
 	}
+
+
+
+
+
+
 
 
 

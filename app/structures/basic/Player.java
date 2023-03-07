@@ -1,5 +1,7 @@
 package structures.basic;
 
+import java.util.List;
+
 /**
  * A basic representation of of the Player. A player
  * has health and mana.
@@ -11,8 +13,10 @@ public class Player {
 
 	int health;
 	int mana;
+	protected Hand hand;
+	private List<Card> deck;
 
-	
+
 	public Player() {
 		super();
 		this.health = 20;
@@ -28,6 +32,7 @@ public class Player {
 	}
 	public void setHealth(int health) {
 		this.health = health;
+
 	}
 	public int getMana() {
 		return mana;
@@ -36,12 +41,28 @@ public class Player {
 
 	// Add Mana and make maximum value by Luo
 	//addMana =roundNumber+1
-	public void setMana(int roundNumber) {
-		this.mana += roundNumber +1;
-		if(this.mana > 9) {
+	public void setMana(int addMana) {
+		int newMana = mana + addMana;
+		if(newMana > 9) {
 			this.mana = 9;
+		}	else {
+			this.mana = newMana;
 		}
 	}
-	
-	
+
+
+	public Hand getHand() {
+		return hand;
+	}
+
+	public void setHand(Hand h) {
+		this.hand = h;
+	}
+
+	public List<Card> getDeck() {
+		return deck;
+	}
+	public void setDeck(List<Card> deck) {
+		this.deck = deck;
+	}
 }
