@@ -11,6 +11,7 @@ public class Player {
 
 	int health;
 	int mana;
+
 	
 	public Player() {
 		super();
@@ -34,14 +35,11 @@ public class Player {
 
 
 	// Add Mana and make maximum value by Luo
-	public void setMana(int addMana) {
-		this.mana = addMana;
-		int newMana = mana + addMana;
-
-		if(newMana > 9) {
+	//addMana =roundNumber+1
+	public void setMana(int roundNumber) {
+		this.mana += roundNumber +1;
+		if(this.mana > 9) {
 			this.mana = 9;
-		}	else {
-			this.mana = newMana;
 		}
 	}
 	

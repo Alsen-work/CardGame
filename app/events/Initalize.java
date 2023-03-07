@@ -21,9 +21,6 @@ import java.util.Random;
  *   messageType = “initalize”
  * }
  *
- *  表示浏览器中的核心游戏循环正在启动，意味着
- *  * 它已经准备好接收来自后端的命令。
- *
  * 
  * @author Dr. Richard McCreadie
  *
@@ -54,6 +51,8 @@ public class Initalize implements EventProcessor {
 		initBoard(out,gameState,message);
 		// set player avatar by Luo
 		initPlayer(out,gameState,message);
+
+
 
 
 	}
@@ -120,17 +119,19 @@ public class Initalize implements EventProcessor {
 
 
 		// Set player stats
-		BasicCommands.addPlayer1Notification(out, "Set player1 stats", 2);
+		BasicCommands.addPlayer1Notification(out, "Set player1 health", 2);
 		BasicCommands.setPlayer1Health(out, gameState.getPlayer1());
-		BasicCommands.setPlayer1Mana(out, gameState.getPlayer1());
+		BasicCommands.addPlayer1Notification(out, "Set the initial mana of player 1", 2);
+		BasicCommands.setPlayer1Mana(out, gameState.getRoundPlayer());
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		BasicCommands.addPlayer1Notification(out, "Set player2 stats", 2);
+		BasicCommands.addPlayer1Notification(out, "Set player2 health", 2);
 		BasicCommands.setPlayer2Health(out, gameState.getPlayer2());
-		BasicCommands.setPlayer2Mana(out, gameState.getPlayer2());
+		BasicCommands.addPlayer1Notification(out, "Set the initial mana of player 2", 2);
+		BasicCommands.setPlayer2Mana(out, gameState.getRoundPlayer());
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
