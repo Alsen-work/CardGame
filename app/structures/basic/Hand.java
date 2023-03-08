@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Hand {
 
-    private int handNum;
+    private int handNum;//手牌数（可用handList.size（）代替？）
     private ArrayList<Card> handList;
     private Card selectCard;
     private Card randomCard;
@@ -13,8 +13,8 @@ public class Hand {
 
 
     public Hand() {
-        super();
-        this.handNum = 1;
+
+        this.handNum = 0;
         this.handList = new ArrayList<Card>();
         this.selectCard = null;
         this.selectCarPos = -1;
@@ -25,37 +25,36 @@ public class Hand {
     public void giveHand(Player p,int roundNum) {
         Random rand = new Random();
         int randomIndex;
-       if (roundNum == 1){//第一回合抽3张卡
-           // 初始化牌堆
-           System.out.println("init Hand : " + p);
-           // 判断牌堆剩余卡的数量
-           if (p.getDeck().size() == 20) {
-            //随机抽取三张
+        int numberOfElements;//抽牌数量（第一回合为3，其余为1）
 
-            int numberOfElements = 3;
-
-            for (int i = 0; i < numberOfElements; i++, handNum++) {
+        if (p.getDeck().size() > 0) {
+            System.out.println("init Hand : " + p);
+            if (roundNum == 1) {
+                numberOfElements = 3;//第一回合抽3张卡
+            }else {
+                numberOfElements = 1;//其余回合抽1张
+            }
+            for (int i = 0; i < numberOfElements; i++) {
                 randomIndex = rand.nextInt(p.getDeck().size());
                 randomCard = p.getDeck().get(randomIndex);//随机抽牌
-                handList.add(randomCard);//将从排队抽到的牌放入手牌队列
 
-                p.getDeck().remove(randomIndex);//将一抽到的卡的索引从牌堆中删除
-                System.out.println("Remaining " + p + " deck size :" + p.getDeck().size());
+                //手牌上限不超过6
+                if(handNum < 6 && handNum > -1){
+                    handList.add(randomCard);//将从牌堆抽到的牌放入手牌队列
+                    this.handNum++;//手牌数加一
+                    System.out.println("HandNum is " + this.handNum + " & HandList is "+handList.size());
+                    p.getDeck().remove(randomIndex);//将一抽到的卡的索引从牌堆中删除
+                    System.out.println("Remaining deck size :" + p.getDeck().size()+ " "  + p );
+                    System.out.println();
+
+                }else {
+                    System.out.println("Current hand reaches maximum!! is" + this.handNum);
+                }
+
             }
-           }
-
-        }else if(roundNum > 1){
-               //其余回合抽一张
-               System.out.println("otherRound Hand : " + p);
-               randomIndex = rand.nextInt(p.getDeck().size());
-               randomCard = p.getDeck().get(randomIndex);//随机抽牌
-               handList.add(randomCard);//将从排队抽到的牌放入手牌队列
-
-               p.getDeck().remove(randomIndex);//将一抽到的卡的索引从牌堆中删除
-               System.out.println("Remaining " + p + " deck size :" + p.getDeck().size());
-           }
-       }
-
+            System.out.println();
+        }
+    }
 
 
 
