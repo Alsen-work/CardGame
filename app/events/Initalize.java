@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Board;
-import structures.basic.Card;
 import structures.basic.Tile;
 import structures.basic.Unit;
 
@@ -44,6 +43,8 @@ public class Initalize implements EventProcessor {
 		initBoard(out,gameState,message);
 		// set player avatar by Luo
 		initPlayer(out,gameState,message);
+		//点击endTurn开始游戏
+		BasicCommands.addPlayer1Notification(out, "Click the EndTurn button to draw a hand to start the game", 5);
 
 
 
@@ -110,40 +111,15 @@ public class Initalize implements EventProcessor {
 			e.printStackTrace();
 		}
 
-
-		// Set player stats
+		// Set player health
 		BasicCommands.addPlayer1Notification(out, "Set player1 health", 2);
 		BasicCommands.setPlayer1Health(out, gameState.getPlayer1());
-		BasicCommands.addPlayer1Notification(out, "Set the initial mana of player 1", 2);
-		BasicCommands.setPlayer1Mana(out, gameState.getRoundPlayer());
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+
 		BasicCommands.addPlayer1Notification(out, "Set player2 health", 2);
 		BasicCommands.setPlayer2Health(out, gameState.getPlayer2());
-		BasicCommands.addPlayer1Notification(out, "Set the initial mana of player 2", 2);
-		BasicCommands.setPlayer2Mana(out, gameState.getRoundPlayer());
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
 
-		//draw Player's hand
-		int i = 0;
-
-		for (Card card : gameState.getRoundPlayer().getHand().getHandList()) {
-			BasicCommands.drawCard(out, card, i + 1, 0);
-			BasicCommands.addPlayer1Notification(out, "Draw hand" + i+1, 2);
-			i++;
-		}
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 
 
 	}

@@ -9,7 +9,9 @@ public class Hand {
     private ArrayList<Card> handList;
     private Card selectCard;
     private Card randomCard;
-    private int selectCarPos;
+    //是否选中
+    boolean isCardSelected ;
+    private int selectCardPos;
 
 
     public Hand() {
@@ -17,7 +19,7 @@ public class Hand {
         this.handNum = 0;
         this.handList = new ArrayList<Card>();
         this.selectCard = null;
-        this.selectCarPos = -1;
+        this.selectCardPos = -1;
 
     }
 
@@ -37,6 +39,7 @@ public class Hand {
             for (int i = 0; i < numberOfElements; i++) {
                 randomIndex = rand.nextInt(p.getDeck().size());
                 randomCard = p.getDeck().get(randomIndex);//随机抽牌
+                System.out.println("random card id: " +randomCard.getId());
 
                 //手牌上限不超过6
                 if(handNum < 6 && handNum > -1){
@@ -55,7 +58,9 @@ public class Hand {
             System.out.println();
         }
     }
-
+    public Card getCardFromHand(int pos) {
+        return getHandList().get(pos);
+    }
 
 
     public int getHandNum() {
@@ -80,14 +85,16 @@ public class Hand {
 
     public void setSelectCard(Card selectCard) {
         this.selectCard = selectCard;
+
     }
 
-    public int getSelectCarPos() {
-        return selectCarPos;
+    public int getSelectCardPos() {
+        return selectCardPos;
     }
 
-    public void setSelectCarPos(int selectCarPos) {
-        this.selectCarPos = selectCarPos;
+    public void setSelectCardPos(int selectCardPos) {
+        this.selectCardPos = selectCardPos;
+
     }
 
     public Card getRandomCard() {
@@ -97,6 +104,17 @@ public class Hand {
     public void setRandomCard(Card randomCard) {
         this.randomCard = randomCard;
     }
+
+    public boolean isCardSelected() {
+        return isCardSelected;
+    }
+
+    public void setCardSelected(boolean cardSelected) {
+          this.isCardSelected = cardSelected;
+    }
+
+
+
 
 
 }

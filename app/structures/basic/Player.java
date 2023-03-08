@@ -41,7 +41,7 @@ public class Player {
 
 	// Add Mana and make maximum value by Luo
 	//addMana =roundNumber+1
-	public void setMana(int addMana) {
+	public void addMana(int addMana) {
 		int newMana = mana + addMana;
 		if(newMana > 9) {
 			this.mana = 9;
@@ -50,6 +50,9 @@ public class Player {
 		}
 	}
 
+	public void setMana(int mana) {
+		this.mana = mana;
+	}
 
 	public Hand getHand() {
 		return hand;

@@ -51,7 +51,8 @@ public class GameState {
 		player2.setDeck(deck2);
 
 		//set start from player1
-		this.setRoundPlayer(player1);
+		//(因为目前逻辑试点击endturn开始游戏，且点击后先执行exchangePlayer(),所以这里为player2)
+		this.setRoundPlayer(player2);
 		//set 0, start form round 1
 		roundNumber = 0;
 
@@ -66,45 +67,6 @@ public class GameState {
 		player2.setHand(aiHand);
 
 
-
-
-
-		//测试回合机制是否成立
-		System.out.println("-------------1-");
-		takeTurn();
-		takeTurn();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("-------------2-");
-		takeTurn();
-		takeTurn();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("-------------3-");
-		takeTurn();
-		takeTurn();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("-------------4-");
-		takeTurn();
-		takeTurn();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("-------------5-");
-		takeTurn();
-		takeTurn();
 	}
 
 	public Board getBoard() {
@@ -126,15 +88,21 @@ public class GameState {
 
 
 		if (getRoundPlayer() == player1) {
-			player1.setMana(roundNumber + 1);//+1 because the initial roundNumber is 0
+			player1.addMana(roundNumber + 1);//+1 because the initial roundNumber is 0
 			System.out.println("player1 mana is " + player1.getMana());
 		} else {
-			player2.setMana(roundNumber + 1);
+			player2.addMana(roundNumber + 1);
 			System.out.println("player2 mana is " + player2.getMana());
 		}
 
 	}
 
+
+
+	public void clearMana() {
+		System.out.println("clear mana");
+		getRoundPlayer().setMana(0);
+	}
 
 
 
@@ -168,26 +136,49 @@ public class GameState {
 		this.aiHand = aiHand;
 	}
 
-	public void takeTurn(){
+	public void changePlayer() {
+
+		if (getRoundPlayer() == player1) {
+			setRoundPlayer(player2);
+		} else {
+			setRoundPlayer(player1);
+		}
+	}
+
+	public void takeTurn() {
+		System.out.println("----------------------------");
+		// Clears mana at the end of each turn
+		clearMana();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		//Turn on the player's turn and set the player's mana for that turn
 		//turn + 1 on player 1's turn
-		if(getRoundPlayer() == player1){
+		if (getRoundPlayer() == player1) {
 			roundNumber++;
-			System.out.println("Round : " +this.roundNumber);
+			System.out.println("Round : " + this.roundNumber);
 			System.out.println("now is player 1 round");
-			giveMana();//set mana
-			humanHand.giveHand(player1,roundNumber);
-			setRoundPlayer(player2);
-		}else {
+			giveMana();
+			humanHand.giveHand(player1, roundNumber);
+
+		} else {
 			System.out.println("now is player 2 round");
-			giveMana();//set mana
-			aiHand.giveHand(player2,roundNumber);
-			setRoundPlayer(player1);
+			giveMana();
+			aiHand.giveHand(player2, roundNumber);
 
 		}
-
 	}
+
+
+
+
+
+
+
+
 
 }
 
