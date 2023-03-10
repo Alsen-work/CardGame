@@ -24,38 +24,51 @@ public class CardClicked implements EventProcessor{
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
-		//获取卡牌位置（1-6）减一，为handList的索引（0-5）
-		int handPosition = message.get("position").asInt() ;//1-6
 
-		//clickedCard表示点击的卡牌
-		Card clickedCard = gameState.getRoundPlayer().getHand().getCardFromHand(handPosition-1);
+			//获取卡牌位置（1-6）减一，为handList的索引（0-5）
+			int handPosition = message.get("position").asInt();//1-6
 
-		gameState.getRoundPlayer().getHand().setSelectCard(clickedCard);//选中的手牌名字
-		gameState.getRoundPlayer().getHand().setSelectCardPos(handPosition);//选中的手牌位置
-		BasicCommands.addPlayer1Notification(out, "clicked cardId: "+clickedCard.getId()+", handPosition is: "+handPosition, 2);
-		//选中的手牌高亮
-		BasicCommands.drawCard(out, gameState.getRoundPlayer().getHand().getSelectCard(), gameState.getRoundPlayer().getHand().getSelectCardPos(), 1);
+			//现在手牌大小
+			int handListSize = gameState.getRoundPlayer().getHand().getHandList().size();
 
+			//执行仅选中的牌高亮逻辑
+			if (handPosition >= 1 && handPosition <= handListSize) {
+				//clickedCard表示点击的卡牌
+				Card clickedCard = gameState.getRoundPlayer().getHand().getCardFromHand(handPosition - 1);
+				System.out.println("clickedCard cardId: " + clickedCard.getId() + ", handPosition is: " + handPosition);
 
-//		//手牌高亮事件（选中一张时，其他卡牌及先前选中的牌不高亮）---未完成
-//		//判断是否高亮
-//		if(gameState.getRoundPlayer().getHand().isCardSelected()){
-//			//如果该牌已经高亮,取消高亮
-//			gameState.getRoundPlayer().getHand().setCardSelected(false);//取消选中状态
-//			System.out.println("already highlight , selected card status changes:"+gameState.getRoundPlayer().getHand().isCardSelected());
-//			BasicCommands.drawCard(out, gameState.getRoundPlayer().getHand().getSelectCard(), gameState.getRoundPlayer().getHand().getSelectCardPos(), 0);
-//		}else {
-//			//如果非高亮
-//			gameState.getRoundPlayer().getHand().setCardSelected(true);//选中状态
-//			System.out.println("selected card status :"+gameState.getRoundPlayer().getHand().isCardSelected());
-//			BasicCommands.drawCard(out, gameState.getRoundPlayer().getHand().getSelectCard(), gameState.getRoundPlayer().getHand().getSelectCardPos(), 1);
-//
-//		}
+				//SelectedCard表示选中的卡牌
+				Card selectedCard = gameState.getRoundPlayer().getHand().getSelectCard();
 
+				//判断是否选中
+				if (selectedCard != null && selectedCard != clickedCard) {
+					//未选中的手牌取消高亮
+					BasicCommands.drawCard(out, selectedCard, gameState.getRoundPlayer().getHand().getSelectCardPos(), 0);
+					System.out.println("selected cardId: " + selectedCard.getId() + ", handPosition is: " + handPosition + " highlight false!!");
+				}
 
+				//选中的手牌名字
+				gameState.getRoundPlayer().getHand().setSelectCard(clickedCard);
+				//选中的手牌位置
+				gameState.getRoundPlayer().getHand().setSelectCardPos(handPosition);
+				//选中的手牌高亮显示
+				BasicCommands.drawCard(out, clickedCard, handPosition, 1);
+				System.out.println(" new clickedCard cardId: " + clickedCard.getId() + ", handPosition is: " + handPosition);
+				selectedCard = clickedCard;
+				System.out.println(" new selected cardId: " + selectedCard.getId() + ", handPosition is: " + handPosition);
+
+			}
 
 
 
 	}
+
+
+
+
+
+
+
+
 
 }

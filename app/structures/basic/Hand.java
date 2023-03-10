@@ -77,12 +77,18 @@ public class Hand {
         }
             System.out.println();
     }
-
+    //用于clickedCard表示点击的卡牌
     public Card getCardFromHand(int pos) {
         return getHandList().get(pos);
     }
 
-
+    public void removeCard(int i) {
+        if (i>=0) {
+            handList.remove(i);
+            setHandNum(handNum--);
+            System.out.println("remove card position is " + i );
+        }
+    }
     public int getHandNum() {
         return handNum;
     }
