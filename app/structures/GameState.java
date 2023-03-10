@@ -97,12 +97,12 @@ public class GameState {
 
 	}
 
-
-
 	public void clearMana() {
 		System.out.println("clear mana");
 		getRoundPlayer().setMana(0);
 	}
+	
+
 
 
 

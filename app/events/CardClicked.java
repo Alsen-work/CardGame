@@ -36,6 +36,7 @@ public class CardClicked implements EventProcessor{
 		//选中的手牌高亮
 		BasicCommands.drawCard(out, gameState.getRoundPlayer().getHand().getSelectCard(), gameState.getRoundPlayer().getHand().getSelectCardPos(), 1);
 
+
 //		//手牌高亮事件（选中一张时，其他卡牌及先前选中的牌不高亮）---未完成
 //		//判断是否高亮
 //		if(gameState.getRoundPlayer().getHand().isCardSelected()){
@@ -50,6 +51,7 @@ public class CardClicked implements EventProcessor{
 //			BasicCommands.drawCard(out, gameState.getRoundPlayer().getHand().getSelectCard(), gameState.getRoundPlayer().getHand().getSelectCardPos(), 1);
 //
 //		}
+
 
 
 

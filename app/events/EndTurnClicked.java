@@ -28,27 +28,24 @@ public class EndTurnClicked implements EventProcessor{
 
 	private void endTurnStatusChange(ActorRef out, GameState gameState) {
 
+		//点击“结束回合”按钮触发事件：
+		//更换玩家-清空mana，计算回合数，给mana，给手牌
+		//更新玩家生命，更新玩家mana，取消选择手卡，
 		System.out.println("clicked EndTurnButton");
 		gameState.changePlayer();
 		gameState.takeTurn();
+		//update player mana
 		System.out.println("try update mana");
-		UpdateStatus.updatePlayerMana(out, gameState);//update player mana
-		System.out.println("try draw card");
-		UpdateStatus.drawCardsInHand(out, gameState);
-
-		// 判断牌堆是否还有牌
-//		if (gameState.getRoundPlayer().getDeck().size() <= 0) {
-//			System.out.println("gameover!!");
-//			//gameState.gameOver();
-//		}
-//		else {
-
-		//	if(gameState.getRoundPlayer() == gameState.getPlayer1()) {
-				//Card card = gameState.getRoundPlayer().getHand().getCardList().get(0);
+		UpdateStatus.updatePlayerMana(out, gameState);
+		//Show human player hand, ai player not
+		if(gameState.getRoundPlayer() == gameState.getPlayer1()) {
+			System.out.println("try draw card");
+			UpdateStatus.drawCardsInHand(out, gameState);
+		}else {
+			System.out.println(" it's aiPlayer");
+		}
 
 
-		//	}
-//		}
 
 	}
 

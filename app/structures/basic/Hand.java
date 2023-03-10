@@ -23,7 +23,21 @@ public class Hand {
 
     }
 
-    //第一回合从牌堆抽取三张卡by Luo
+
+    /**手牌规则：
+     * 初始摸三张，回合结束摸一张，上限6，超出上限丢弃，若牌堆没有卡则输
+     *
+     * 手牌逻辑：
+     * 判断deck.size是否为0
+     * 否——得到随机数randomIndex,随机数与deck列表排序数对应（索引） —> 得到对应卡牌randomCard ->
+     *      判断手牌是否超出上限6
+     *      是——加入手牌队列handList -> 从牌堆删除卡牌索引 ->判断是否是人类玩家(endTurnClick.java())
+     *          是——前端显示手牌(endTurnClick.java())
+     *          否——前端不显示手牌(endTurnClick.java())
+     *      否——从牌堆删除卡牌索引
+     * 是——游戏结束
+
+     */
     public void giveHand(Player p,int roundNum) {
         Random rand = new Random();
         int randomIndex;
@@ -41,7 +55,7 @@ public class Hand {
                 randomCard = p.getDeck().get(randomIndex);//随机抽牌
                 System.out.println("random card id: " +randomCard.getId());
 
-                //手牌上限不超过6
+                //手牌上限为6
                 if(handNum < 6 && handNum > -1){
                     handList.add(randomCard);//将从牌堆抽到的牌放入手牌队列
                     this.handNum++;//手牌数加一
@@ -51,13 +65,19 @@ public class Hand {
                     System.out.println();
 
                 }else {
+                    //When your hand is full, discard the new card you have drawn
+                    p.getDeck().remove(randomIndex);//removes card from deck
                     System.out.println("Current hand reaches maximum!! is" + this.handNum);
+                    System.out.println("discard card id: " +randomCard.getId());
+                    System.out.println("Remaining deck size :" + p.getDeck().size()+ " "  + p );
                 }
-
-            }
-            System.out.println();
+                }
+            }else { //牌堆为0
+            System.out.println("Gameover!! " + p +" loses");
         }
+            System.out.println();
     }
+
     public Card getCardFromHand(int pos) {
         return getHandList().get(pos);
     }
