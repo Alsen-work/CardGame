@@ -22,8 +22,20 @@ public class EndTurnClicked implements EventProcessor{
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
 
+		/**Determining if the user is ready to interact*/
+		if (gameState.isUserInteractionEnabled()) {
+			return;
+		}
+		/**Lock*/
+		gameState.userinteractionLock();
+
+
 		// End turn state change procedure
 		endTurnStatusChange(out, gameState);
+
+
+		/**UnLock**/
+		gameState.userinteractionUnlock();
 	}
 
 	private void endTurnStatusChange(ActorRef out, GameState gameState) {
@@ -33,16 +45,35 @@ public class EndTurnClicked implements EventProcessor{
 		//更新玩家生命，更新玩家mana，取消选择手卡，
 		System.out.println("clicked EndTurnButton");
 		gameState.changePlayer();
+		UpdateStatus.threadSleep();
 		gameState.takeTurn();
+		UpdateStatus.threadSleep();
+		//update player health
+		System.out.println("try update health");
+		UpdateStatus.updatePlayerHealth(out, gameState);
+		UpdateStatus.threadSleep();
 		//update player mana
 		System.out.println("try update mana");
 		UpdateStatus.updatePlayerMana(out, gameState);
+		UpdateStatus.threadSleep();
+		// deselect all unit and hand
+		System.out.println("deselect all unit and hand");
+		gameState.deselectUnit();
+		gameState.deselectHand();
+		UpdateStatus.threadSleep();
+
+		//回合结束抽牌
+		//gameState.getRoundPlayer().getHand().giveHand(gameState.getRoundPlayer(), gameState.getRoundNumber());
+
 		//Show human player hand, ai player not
 		if(gameState.getRoundPlayer() == gameState.getPlayer1()) {
 			System.out.println("try draw card");
-			UpdateStatus.drawCardsInHand(out, gameState);
+			int preHandNum = (gameState.getRoundPlayer().getHand().getHandList().size()) -1; 									//after get new one, get current handsize -1 for old size
+			UpdateStatus.updateHandCards(out, gameState, preHandNum, gameState.getRoundPlayer().getHand().getHandList()); 	//refresh hand ,show with one card added
+			UpdateStatus.threadSleep();
 		}else {
 			System.out.println(" it's aiPlayer");
+
 		}
 
 

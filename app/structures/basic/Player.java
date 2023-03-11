@@ -68,4 +68,12 @@ public class Player {
 	public void setDeck(List<Card> deck) {
 		this.deck = deck;
 	}
+
+	public boolean enoughPay(int manacost) {
+		if (getMana() - manacost >= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

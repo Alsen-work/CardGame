@@ -1,11 +1,11 @@
 package structures.basic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A basic representation of a tile on the game board. Tiles have both a pixel position
@@ -27,7 +27,10 @@ public class Tile {
 	int height;
 	int tilex;
 	int tiley;
-	
+	boolean free;
+	Monster unitOnTile;
+
+
 	public Tile() {}
 	
 	public Tile(String tileTexture, int xpos, int ypos, int width, int height, int tilex, int tiley) {
@@ -40,6 +43,8 @@ public class Tile {
 		this.height = height;
 		this.tilex = tilex;
 		this.tiley = tiley;
+		this.free = true;
+		this.unitOnTile = null;
 	}
 	
 	public Tile(List<String> tileTextures, int xpos, int ypos, int width, int height, int tilex, int tiley) {
@@ -51,6 +56,8 @@ public class Tile {
 		this.height = height;
 		this.tilex = tilex;
 		this.tiley = tiley;
+		this.free = true;
+		this.unitOnTile = null;
 	}
 	public List<String> getTileTextures() {
 		return tileTextures;
@@ -113,7 +120,46 @@ public class Tile {
 		return null;
 		
 	}
-	
-	
-	
+
+
+
+	//在Tile上放置一个Monster
+	public boolean addUnit (Monster m) {
+		//判断该区域是否空闲，是否有unit要放置
+		if (!(isFree()) || !(getUnitOnTile()==null)) {
+			return false;
+		}
+		else {
+			this.setUnitOnTile(m);
+			m.setPositionByTile(this);
+			this.setFree(false);
+			return true;
+		}
+	}
+	//从Tile上移除一个Monster
+	public boolean removeUnit () {
+		if (isFree() || getUnitOnTile()==null) {
+			return false;
+		}
+		else {
+			this.setUnitOnTile(null);
+			this.unitOnTile.setPosition(null);
+			this.setFree(true);
+			return true;
+		}
+	}
+
+	public boolean isFree() {
+		return free;
+	}
+
+	public void setFree(boolean free) {
+		this.free = free;
+	}
+	public Monster getUnitOnTile() {
+		return unitOnTile;
+	}
+	public void setUnitOnTile(Monster unitOnTile) {
+		this.unitOnTile = unitOnTile;
+	}
 }

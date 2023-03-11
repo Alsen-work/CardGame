@@ -5,6 +5,7 @@ import utils.BasicObjectBuilders;
 import utils.OrderedCardLoader;
 import utils.StaticConfFiles;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,8 @@ public class GameState {
 	private Hand aiHand;
 	private List<Card> deck1;
 	private List<Card> deck2;
+	private boolean locked;//判断用户交互是否锁定
+	private ArrayList<Tile> tileAdjustedRangeContainer;//用于保存临时瓷砖
 
 	public boolean gameInitalised = false;
 
@@ -49,6 +52,9 @@ public class GameState {
 		System.out.println("SET deck2 " + deck2.size());
 		player1.setDeck(deck1);
 		player2.setDeck(deck2);
+
+		//
+		tileAdjustedRangeContainer = new ArrayList<Tile>();
 
 		//set start from player1
 		//(因为目前逻辑试点击endturn开始游戏，且点击后先执行exchangePlayer(),所以这里为player2)
@@ -120,6 +126,14 @@ public class GameState {
 		this.roundPlayer = roundPlayer;
 	}
 
+	public int getRoundNumber() {
+		return roundNumber;
+	}
+
+	public void setRoundNumber(int roundNumber) {
+		this.roundNumber = roundNumber;
+	}
+
 	public Hand getHumanHand() {
 		return humanHand;
 	}
@@ -172,13 +186,52 @@ public class GameState {
 		}
 	}
 
+	/** Controls whether users can interact,
+	 *  used to prevent users from interacting while state activity is occurring to avoid inconsistent game states
+	 */
+	public void userinteractionLock() {
+		System.out.println("User Interaction locked.");
+		locked = true;
+	}
+
+	public void userinteractionUnlock() {
+		System.out.println("User Interaction unlocked.");
+		locked = false;
+	}
+
+    public boolean isUserInteractionEnabled() {
+		if (locked) {
+			System.out.println("Interaction locking！！");
+		}
+		return locked;
+    }
+
+	// Deselect the hand
+	public void deselectHand() {
+		if(this.getRoundPlayer().getHand().getSelectCard() != null) {
+			this.getRoundPlayer().getHand().setSelectCard(null);
+		}
 
 
+	}
 
+	public void deselectUnit() {
+		if (this.getBoard().getUnitSelected() != null) {
+			this.getBoard().getUnitSelected().setProvoked(false);
+			this.getBoard().setUnitSelected(null);
 
+			tileAdjustedRangeContainer.clear();
+		}
 
+	}
 
+	public ArrayList<Tile> getTileAdjustedRangeContainer() {
+		return tileAdjustedRangeContainer;
+	}
 
+	public void setTileAdjustedRangeContainer(ArrayList<Tile> tilesToHighlight) {
+		tileAdjustedRangeContainer = tilesToHighlight;
+	}
 
 }
 

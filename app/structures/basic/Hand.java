@@ -9,6 +9,7 @@ public class Hand {
     private ArrayList<Card> handList;
     private Card selectCard;
     private Card randomCard;
+    int randomIndex;
     //是否选中
     boolean isCardSelected ;
     private int selectCardPos;
@@ -31,7 +32,7 @@ public class Hand {
      * 判断deck.size是否为0
      * 否——得到随机数randomIndex,随机数与deck列表排序数对应（索引） —> 得到对应卡牌randomCard ->
      *      判断手牌是否超出上限6
-     *      是——加入手牌队列handList -> 从牌堆删除卡牌索引 ->判断是否是人类玩家(endTurnClick.java())
+     *      是——加入手牌队列handList -> 从牌堆删除卡牌索引（丢弃） ->判断是否是人类玩家(endTurnClick.java())
      *          是——前端显示手牌(endTurnClick.java())
      *          否——前端不显示手牌(endTurnClick.java())
      *      否——从牌堆删除卡牌索引
@@ -40,7 +41,7 @@ public class Hand {
      */
     public void giveHand(Player p,int roundNum) {
         Random rand = new Random();
-        int randomIndex;
+
         int numberOfElements;//抽牌数量（第一回合为3，其余为1）
 
         if (p.getDeck().size() > 0) {
@@ -77,6 +78,7 @@ public class Hand {
         }
             System.out.println();
     }
+
     //用于clickedCard表示点击的卡牌
     public Card getCardFromHand(int pos) {
         return getHandList().get(pos);
@@ -138,8 +140,6 @@ public class Hand {
     public void setCardSelected(boolean cardSelected) {
           this.isCardSelected = cardSelected;
     }
-
-
 
 
 
