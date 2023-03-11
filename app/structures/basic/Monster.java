@@ -2,7 +2,9 @@ package structures.basic;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import structures.basic.abilities.*;
+
+import java.util.ArrayList;
+import structures.basic.abilities.*;
 
 public class Monster extends Unit{
 
@@ -15,7 +17,7 @@ public class Monster extends Unit{
     protected int 					HP;				// Monster's current health value, between 0 - maxHP
     protected int 					maxHP;			// Maximum value a Monster's HP can be
     protected int 					attackValue; 	// How much damage Monster does in one attack action
-   // protected ArrayList <Ability>	abilities;		// Any abilities the Monster has
+    protected ArrayList <Ability>	abilities;		// Any abilities the Monster has
 
     // Action values
     protected int 			movesLeft;				// number of move actions Monster has left, tracks directly to range
@@ -42,7 +44,7 @@ public class Monster extends Unit{
         this.attacksMax = 1;
         this.attackRange = 1;
 
-       // this.abilities = null;
+        this.abilities = null;
 
         this.Cooldown = true;
         this.provoked = false;
@@ -222,15 +224,15 @@ public class Monster extends Unit{
 
     // Cooldown management
 
-//    // Indicates a Monster can no longer move & attack (if true)
-//    public boolean getOnCooldown() {
-//        return onCooldown;
-//    }
-//
-//    // Mostly used only in testing
-//    public void setCooldown(boolean b) {
-//        this.onCooldown = b;
-//    }
+    // Indicates a Monster can no longer move & attack (if true)
+    public boolean getOnCooldown() {
+        return Cooldown;
+    }
+
+    // Mostly used only in testing
+    public void setCooldown(boolean b) {
+        this.Cooldown = b;
+    }
 
     // Switches cooldown status and related action variables
     public void toggleCooldown() {
@@ -249,28 +251,27 @@ public class Monster extends Unit{
         }
     }
 
-//    public boolean hasAbility() {
-//        if(this.abilities != null) {
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    public ArrayList <Ability> getMonsterAbility() {
-//        return abilities;
-//
-//    }
-//
-//    public void setAbility(ArrayList <Ability> abs) {
-//        abilities = abs;
-//    }
-//
-//    public EffectAnimation getAbAnimation() {
-//        if(this.abAnimation != null) {
-//            return this.abAnimation;
-//        }
-//        return null;
-//    }
+    public boolean hasAbility() {
+        if(this.abilities != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList <Ability> getMonsterAbility() {
+        return abilities;
+    }
+
+    public void setAbility(ArrayList <Ability> abs) {
+        abilities = abs;
+    }
+
+    public EffectAnimation getAbAnimation() {
+        if(this.abAnimation != null) {
+            return this.abAnimation;
+        }
+        return null;
+    }
 
     public void setAbAnimation(EffectAnimation e) {
         this.abAnimation = e;
