@@ -9,7 +9,7 @@ public class Spell_EntropicDecay implements Ability{
     // Ability attributes
     private boolean enemyTarget;
     private Class<? extends Monster> targetType;
-    private Call_IDs callID;
+    private ActivateMoment activateMoment;
     EffectAnimation eAnimation;
 
     public Spell_EntropicDecay(boolean enemyTarget, Class<? extends Monster> targetType, EffectAnimation eAnimation) {
@@ -17,7 +17,7 @@ public class Spell_EntropicDecay implements Ability{
         this.targetType = targetType;
         this.eAnimation = eAnimation;
 
-        this.callID = Call_IDs.noTimeConstraint;
+        this.activateMoment = ActivateMoment.noTimeConstraint;
     }
 
     public boolean execute(Monster targetMonster, GameState gameState) {
@@ -30,10 +30,7 @@ public class Spell_EntropicDecay implements Ability{
             return false;
         }
     }
-    // ================================================================================
 
-
-    // Getters to communicate target information
     public boolean targetEnemy() {
         return enemyTarget;
     }
@@ -42,8 +39,8 @@ public class Spell_EntropicDecay implements Ability{
         return targetType;
     }
 
-    public Call_IDs getCallID() {
-        return callID;
+    public ActivateMoment getActivateMoment() {
+        return activateMoment;
     }
 
     public EffectAnimation getEffectAnimation() {

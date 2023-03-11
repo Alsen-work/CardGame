@@ -8,7 +8,7 @@ public class Unit_SummonAnywhere implements Ability {
     // Ability attributes
     private boolean enemyTarget;
     private Class<? extends Monster> targetType;
-    private Call_IDs callID;
+    private ActivateMoment activateMoment;
     EffectAnimation eAnimation;
 
 
@@ -18,7 +18,7 @@ public class Unit_SummonAnywhere implements Ability {
         this.targetType = targetType;
         this.eAnimation = eAnimation;
 
-        this.callID = Call_IDs.onCardClicked;
+        this.activateMoment = ActivateMoment.CardClicked;
     }
 
 
@@ -43,8 +43,8 @@ public class Unit_SummonAnywhere implements Ability {
         return targetType;
     }
 
-    public Call_IDs getCallID() {
-        return callID;
+    public ActivateMoment getCallID() {
+        return activateMoment;
     }
 
     public EffectAnimation getEffectAnimation() {

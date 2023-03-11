@@ -7,7 +7,7 @@ public class Unit_Ranged implements Ability{
 
     private boolean enemyTarget;
     private Class<? extends Monster> targetType;
-    private Call_IDs callID;
+    private ActivateMoment activateMoment;
     EffectAnimation eAnimation;
 
     public Unit_Ranged(boolean enemyTarget, Class<? extends Monster> targetType, EffectAnimation eAnimation) {
@@ -15,7 +15,7 @@ public class Unit_Ranged implements Ability{
         this.targetType = targetType;
         this.eAnimation = eAnimation;
 
-        this.callID = Call_IDs.construction;
+        this.activateMoment = ActivateMoment.construction;
     }
 
 
@@ -36,8 +36,8 @@ public class Unit_Ranged implements Ability{
         return targetType;
     }
 
-    public Call_IDs getCallID() {
-        return callID;
+    public ActivateMoment getActivateMoment() {
+        return activateMoment;
     }
 
     public EffectAnimation getEffectAnimation() {

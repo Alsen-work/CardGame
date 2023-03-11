@@ -226,12 +226,12 @@ public class Monster extends Unit{
 	
 	// Indicates a Monster can no longer move & attack (if true)
 	public boolean getOnCooldown() {
-		return onCooldown;
+		return Cooldown;
 	}
 
 	// Mostly used only in testing
 	public void setCooldown(boolean b) {
-		this.onCooldown = b;
+		this.Cooldown = b;
 	}
 	
 	// Switches cooldown status and related action variables
