@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import structures.basic.*;
 import structures.basic.abilities.Ability;
-import structures.basic.abilities.AbilityToUnitLinkage;
 import structures.basic.abilities.Unit_Ranged;
 
 import java.io.File;
@@ -29,46 +28,15 @@ public class BasicObjectBuilders {
 	 * extending card, e.g. MyAwesomeCard that extends Card, you could also specify
 	 * MyAwesomeCard.class here. If using an extending class you will need to manually set any
 	 * new data fields. 
-	 * @param cardConfigFile
+	 * @param configurationFile
 	 * @param id
 	 * @param classtype
 	 * @return
 	 */
-	public static Card loadCard(String cardConfigFile, String unitConfigFile, int id, Class<? extends Card> classtype) {
+	public static Card loadCard(String configurationFile, int id, Class<? extends Card> classtype) {
 		try {
-			Card card = mapper.readValue(new File(cardConfigFile), classtype);
+			Card card = mapper.readValue(new File(configurationFile), classtype);
 			card.setId(id);
-			card.setConfigFile(unitConfigFile);
-
-			// Set ability data to be held in card for reference from AI etc
-			if(AbilityToUnitLinkage.UnitAbility.containsKey(card.getCardname())) {
-				card.setAbilityList(AbilityToUnitLinkage.UnitAbility.get(card.getCardname()));
-			}
-
-			// Set associated class type -- Monster only for this Builder
-			card.setAssociatedClass(Monster.class);
-
-			return card;
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-		return null;
-	}
-	public static Card loadCard(String cardConfigFile, int id, Class<? extends Card> classtype) {
-		try {
-			Card card = mapper.readValue(new File(cardConfigFile), classtype);
-			card.setId(id);
-			card.setConfigFile(cardConfigFile);
-
-			// Set ability data to be held in card for reference from AI etc
-			if(AbilityToUnitLinkage.UnitAbility.containsKey(card.getCardname())) {
-				card.setAbilityList(AbilityToUnitLinkage.UnitAbility.get(card.getCardname()));
-			}
-
-			// Set associated class type -- Spell only for this Builder
-			card.setAssociatedClass(Spell.class);
-
 			return card;
 		} catch (Exception e) {
 			e.printStackTrace();

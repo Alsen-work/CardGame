@@ -74,25 +74,42 @@ public class OrderedCardLoader {
 		
 		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_rock_pulveriser, 20, Card.class));
 		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_bloodshard_golem, 21, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_staff_of_ykir, 22, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 23, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_windshrike, 24, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_pyromancer, 25, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_serpenti, 26, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_entropic_decay, 27, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_planar_scout, 28, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_hailstone_golem, 29, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_rock_pulveriser, 30, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_bloodshard_golem, 31, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_staff_of_ykir, 32, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 33, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_windshrike, 34, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_pyromancer, 35, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_serpenti, 36, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 22, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_windshrike, 23, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_pyromancer, 24, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_serpenti, 25, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_planar_scout, 26, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_hailstone_golem, 27, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_rock_pulveriser, 28, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_bloodshard_golem, 29, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 30, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_windshrike, 31, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_pyromancer, 32, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_serpenti, 33, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_planar_scout, 34, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_hailstone_golem, 35, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_staff_of_ykir, 36, Card.class));
 		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_entropic_decay, 37, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_planar_scout, 38, Card.class));
-		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_hailstone_golem, 39, Card.class));
-		
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_staff_of_ykir, 38, Card.class));
+		cardsInDeck.add(BasicObjectBuilders.loadCard(StaticConfFiles.c_entropic_decay, 39, Card.class));
+
+
+
+
+		// Set the associated class of the cards based on their ID
+		for (int i = 0; i < cardsInDeck.size(); i++) {
+			Card card = cardsInDeck.get(i);
+			// Set ability data to be held in card for reference from AI etc
+			if(AbilityToUnitLinkage.UnitAbility.containsKey(card.getCardname())) {
+				card.setAbilityList(AbilityToUnitLinkage.UnitAbility.get(card.getCardname()));
+			}
+			if (i <= 35) {
+				card.setAssociatedClass(Monster.class);
+			} else {
+				card.setAssociatedClass(Spell.class);
+			}
+		}
+
 		return cardsInDeck;
 	}
 	

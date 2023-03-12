@@ -23,7 +23,6 @@ public class Card implements Comparable<Card>{
 	int manacost;
 	MiniCard miniCard;
 	BigCard bigCard;
-	private String 	configFile;
 	private Class<?> associatedClass;	//Determining the type of card
 	private ArrayList<Ability> abilityList;
 	
@@ -36,7 +35,6 @@ public class Card implements Comparable<Card>{
 		this.manacost = manacost;
 		this.miniCard = miniCard;
 		this.bigCard = bigCard;
-		this.configFile="";
 		this.abilityList=new ArrayList<Ability>();
 		this.associatedClass = Card.class;
 	}
@@ -135,11 +133,6 @@ public class Card implements Comparable<Card>{
 	public void setAbilityList(ArrayList<Ability> abilityList) {
 		this.abilityList = abilityList;
 	}
-	public void setConfigFile(String configFile) {
-		this.configFile = configFile;
-	}
-	public String getConfigFile() {
-		return this.configFile;
-	}
+
 
 }

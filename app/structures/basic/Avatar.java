@@ -36,7 +36,7 @@ public class Avatar extends Monster {
 
 	// Overide monster defend
 	@Override
-	public boolean defend(int d) {
+	public boolean getDamage(int d) {
 		if(this.HP - d <= 0) {
 			this.HP = 0;
 			this.getOwner().setHealth(this.HP);

@@ -6,10 +6,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import commands.BasicCommands;
 import commands.UpdateStatus;
 import structures.GameState;
-import structures.basic.Card;
-import structures.basic.Monster;
-import structures.basic.Tile;
+import structures.basic.*;
 import structures.basic.abilities.Ability;
+import structures.basic.abilities.AbilityToUnitLinkage;
 import structures.basic.abilities.ActivateMoment;
 
 import java.util.ArrayList;
@@ -68,7 +67,6 @@ public class CardClicked implements EventProcessor{
 			gameState.getRoundPlayer().getHand().setSelectCardPos(handPosition);
 			//SelectedCard表示选中的卡牌
 			Card selectedCard = gameState.getRoundPlayer().getHand().getSelectCard();
-			System.out.println("selected cardId: " + selectedCard.getId() + ", handPosition is: " + handPosition + " highlight false!!");
 			BasicCommands.drawCard(out, selectedCard, handPosition, 1);
 
 //			//判断是否选中
@@ -112,63 +110,65 @@ public class CardClicked implements EventProcessor{
 							// Draw affected tiles -highlight
 							UpdateStatus.updateTiles(out, gameState.getTileAdjustedRangeContainer(), 1);
 							cardOut = true;
-							System.out.println("CardOut: "+ cardOut);
+							System.out.println("CardOut: " + cardOut);
 							break;
 						}
 					}
-				}System.out.println("Not hasAbility");
+				}
+				System.out.println("Not hasAbility");
 
 				if (!cardOut) {
-					System.out.println("!CardOut: "+ cardOut);
+					System.out.println("!CardOut: " + cardOut);
 					// Draw summonable tiles
 					ArrayList<Tile> summonableTiles = gameState.getBoard().allSummonableTiles(gameState.getRoundPlayer());
 					UpdateStatus.updateTiles(out, summonableTiles, 1);
 				}
-			}else {
-				System.out.println("it's not a Monster Card!");
+
+				//a loop which checks that a card is a spell, then displays playable tiles depending on spell target
+				else if (clickedCard.getAssociatedClass() == Spell.class) {
+					System.out.println("it's a Spell Card!");
+					//for spell targeting enemy units
+					if (AbilityToUnitLinkage.UnitAbility.get("" + clickedCard.getCardname()).get(0).getTargetType() == Monster.class && clickedCard.targetEnemy() == true) {
+
+						ArrayList<Tile> display = gameState.getBoard().enemyTile(gameState.getRoundPlayer());
+						UpdateStatus.updateTiles(out, display, 2);
+
+					}    //for spell which targets enemy avatar
+					else if (AbilityToUnitLinkage.UnitAbility.get("" + clickedCard.getCardname()).get(0).getTargetType() == Avatar.class && clickedCard.targetEnemy() == true) {
+
+						Tile display = gameState.getBoard().enemyAvatarTile(gameState.getRoundPlayer(), gameState);
+						BasicCommands.drawTile(out, display, 2);
+					} else if (AbilityToUnitLinkage.UnitAbility.get("" + clickedCard.getCardname()).get(0).getTargetType() == null && clickedCard.targetEnemy() == true) {
+						ArrayList<Tile> display = gameState.getBoard().enemyTile(gameState.getRoundPlayer());
+						display.add(gameState.getBoard().enemyAvatarTile(gameState.getRoundPlayer(), gameState));
+						UpdateStatus.updateTiles(out, display, 2);
+					}
+					//for spell targeting friendly unit
+					else if (AbilityToUnitLinkage.UnitAbility.get("" + clickedCard.getCardname()).get(0).getTargetType() == Monster.class && clickedCard.targetEnemy() == false) {
+
+						ArrayList<Tile> display = gameState.getBoard().friendlyTile(gameState.getRoundPlayer());
+						UpdateStatus.updateTiles(out, display, 1);
+
+					}    //for spell targeting friendly avatar
+					else if (AbilityToUnitLinkage.UnitAbility.get("" + clickedCard.getCardname()).get(0).getTargetType() == Avatar.class && clickedCard.targetEnemy() == false) {
+
+						Tile display = gameState.getBoard().ownAvatarTile(gameState.getRoundPlayer());
+						BasicCommands.drawTile(out, display, 1);
+					}
+				} else {
+					System.out.println("it's not a Monster Card!");
+				}
+			} else {
+				System.out.println("Not enoughPayMana");
 			}
-//			} else if (clickedCard.getAssociatedClass() == Spell.class) {
-//				// Determine spell target type
-//				Class<? extends Unit> targetType = AbilityToUnitLinkage.UnitAbility.get(clickedCard.getCardname()).get(0).getTargetType();
-//				// Determine if spell targets enemy
-//				boolean targetsEnemy = clickedCard.targetEnemy();
-//				if (targetType == Monster.class) {
-//					// Draw tiles for spell targeting unit(s)
-//					ArrayList<Tile> targetTiles = targetsEnemy ?
-//							gameState.getBoard().enemyTile(gameState.getRoundPlayer()) :
-//							gameState.getBoard().friendlyTile(gameState.getRoundPlayer());
-//					UpdateStatus.drawBoardTiles(out, targetTiles, targetsEnemy ? 2 : 1);
-//				} else if (targetType == Avatar.class) {
-//					// Draw tile for spell targeting avatar
-//					Tile targetTile = targetsEnemy ?
-//							gameState.getBoard().enemyAvatarTile(gameState.getRoundPlayer(), gameState) :
-//							gameState.getBoard().ownAvatarTile(gameState.getRoundPlayer());
-//					BasicCommands.drawTile(out, targetTile, targetsEnemy ? 2 : 1);
-//				} else if (targetType == null) {
-//					// Draw tiles for spell targeting units and avatar
-//					ArrayList<Tile> targetTiles = new ArrayList<>(targetsEnemy ?
-//							gameState.getBoard().enemyTile(gameState.getRoundPlayer()) :
-//							gameState.getBoard().friendlyTile(gameState.getRoundPlayer()));
-//					targetTiles.add(targetsEnemy ?
-//							gameState.getBoard().enemyAvatarTile(gameState.getRoundPlayer(), gameState) :
-//							gameState.getBoard().ownAvatarTile(gameState.getRoundPlayer()));
-//					UpdateStatus.drawBoardTiles(out, targetTiles, targetsEnemy ? 2 : 1);
-//				}
-//			}
-		}else {
-			System.out.println("Not enoughPayMana");
+
+
 		}
+
+
 		/**UnLock**/
 		gameState.userinteractionUnlock();
-
 	}
-
-
-
-
-
-
-
 
 
 }
