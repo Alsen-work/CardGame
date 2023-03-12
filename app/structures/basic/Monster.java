@@ -2,11 +2,11 @@ package structures.basic;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import structures.basic.abilities.Ability;
 
 import java.util.ArrayList;
-import structures.basic.abilities.*;
 
-public class Monster extends Unit{
+public abstract class Monster extends Unit{
 
 
     @JsonIgnore
@@ -111,6 +111,16 @@ public class Monster extends Unit{
         }
     }
 
+    // Overide monster defend
+    public boolean defend(int d) {
+        if(this.HP - d <= 0) {
+            this.HP = 0;
+            return false;
+        } else {
+            this.HP -= d;
+            return true;
+        }
+    }
     // Heal (gain health)
     // Returns the outcome of attempting to heal and updates health
     public boolean heal(int h) {

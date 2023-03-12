@@ -28,8 +28,8 @@ public class Unit_DrawCardOnSummon implements Ability{
 
     public boolean execute(GameState gameState) {
 
-        gameState.getPlayerOne().getHand().drawCard(gameState.getPlayerOne().getDeck());
-        gameState.getPlayerTwo().getHand().drawCard(gameState.getPlayerTwo().getDeck());
+        gameState.getPlayer1().getHand().giveHand(gameState.getPlayer1(), gameState.getRoundNumber());
+        gameState.getPlayer2().getHand().giveHand(gameState.getPlayer2(), gameState.getRoundNumber());
 
         return true;
     }

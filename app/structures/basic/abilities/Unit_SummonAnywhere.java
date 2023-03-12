@@ -13,7 +13,7 @@ public class Unit_SummonAnywhere implements Ability {
 
 
     // Constructor
-    public A_U_SummonAnywhere(boolean enemyTarget, Class<? extends Monster> targetType, EffectAnimation eAnimation) {
+    public Unit_SummonAnywhere(boolean enemyTarget, Class<? extends Monster> targetType, EffectAnimation eAnimation) {
         this.enemyTarget = enemyTarget;
         this.targetType = targetType;
         this.eAnimation = eAnimation;
@@ -43,7 +43,8 @@ public class Unit_SummonAnywhere implements Ability {
         return targetType;
     }
 
-    public ActivateMoment getCallID() {
+    @Override
+    public ActivateMoment getActivateMoment() {
         return activateMoment;
     }
 

@@ -20,8 +20,8 @@ public class Unit_Flying implements Ability{
 
     public boolean execute(Monster targetMonster, GameState gameState) {
 
-        int boardWidth = gameState.getBoard().getBoardWidth();
-        int boardLength = gameState.getBoard().getBoardLength();
+        int boardWidth = gameState.getBoard().getWidth();
+        int boardLength = gameState.getBoard().getHeight();
 
         targetMonster.setMovesMax(boardWidth*boardLength);
 

@@ -49,9 +49,10 @@ public class Position {
 	public void setTiley(int tilexy) {
 		this.tiley = tilexy;
 	}
-	
-	
-	
-	
-	
+
+	public Tile getTile(Board board) {
+		return board.getTile(tilex, tiley);
+	}
+
+
 }

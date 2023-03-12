@@ -38,7 +38,7 @@ public class AbilityToUnitLinkage {
 		UnitAbility.put("Hailstone Golem", 		constructArrayListAbility());
 		UnitAbility.put("Pureblade Enforcer", 	constructArrayListAbility(	new Unit_BuffWhenEnemySpellCast(false, Monster.class, (BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff)))));
 		UnitAbility.put("Azure Herald", 		constructArrayListAbility(	new Unit_HealAvatarOnSummon(false, Avatar.class, (BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff)))));
-		UnitAbility.put("Silverguard Knight", 	constructArrayListAbility(	new Unit_Provoked(true, Monster.class, null),
+		UnitAbility.put("Silverguard Knight", 	constructArrayListAbility((Ability) new Unit_Provoked(true, Monster.class, null),
 																			new Unit_BuffAttackWhenAvatarDealDamage(false, Monster.class, (BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff)))));
 		UnitAbility.put("Azurite Lion", 		constructArrayListAbility(	new Unit_DoubleAttack(false, Monster.class, null)));
 		UnitAbility.put("Fire Spitter", 		constructArrayListAbility(	new Unit_Ranged(false, Monster.class, (BasicObjectBuilders.loadEffect(StaticConfFiles.f1_projectiles)))));

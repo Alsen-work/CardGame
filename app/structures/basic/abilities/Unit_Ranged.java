@@ -21,8 +21,8 @@ public class Unit_Ranged implements Ability{
 
     public boolean execute(Monster targetMonster, GameState gameState) {
 
-        int boardWidth = gameState.getBoard().getBoardWidth();
-        int boardLength = gameState.getBoard().getBoardLength();
+        int boardWidth = gameState.getBoard().getWidth();
+        int boardLength = gameState.getBoard().getHeight();
 
         targetMonster.setAttackRange(boardWidth * boardLength);
         return true;

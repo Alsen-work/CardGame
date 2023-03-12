@@ -106,7 +106,7 @@ public class CardClicked implements EventProcessor{
 				if (hasAbility) {
 					System.out.println("hasAbility");
 					for (Ability ability : clickedCard.getAbilityList()) {
-						if (ability.getCurrentState() == ActivateMoment.onCardClicked) {
+						if (ability.getActivateMoment() == ActivateMoment.CardClicked) {
 							// Execute ability
 							ability.execute(null, gameState);
 							// Draw affected tiles -highlight

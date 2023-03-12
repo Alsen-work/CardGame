@@ -1,6 +1,7 @@
 package structures.basic.abilities;
 
 import structures.GameState;
+import structures.basic.Avatar;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;
 

@@ -20,7 +20,7 @@ public class Unit_DrawCardOnDeath implements Ability{
 
     public boolean execute(Monster targetMonster, GameState gameState) {
 
-        targetMonster.getOwner().getHand().giveHand(gameState.getRoundPlayer(), gameState.roundNum);
+        targetMonster.getOwner().getHand().giveHand(gameState.getRoundPlayer(), gameState.getRoundNumber());
         return true;
     }
 

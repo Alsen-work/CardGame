@@ -7,7 +7,7 @@ import structures.basic.Tile;
 
 import java.util.ArrayList;
 
-public class Unit_Provoked {
+public class Unit_Provoked implements Ability{
     private boolean enemyTarget;
     private Class<? extends Monster> targetType;
     private ActivateMoment activateMoment;
@@ -15,12 +15,16 @@ public class Unit_Provoked {
 
 
     // Constructor
-    public Unit_Provoke(boolean enemyTarget, Class<? extends Monster> targetType, EffectAnimation eAnimation) {
+    public Unit_Provoked(boolean enemyTarget, Class<? extends Monster> targetType, EffectAnimation eAnimation) {
         this.enemyTarget = enemyTarget;
         this.targetType = targetType;
         this.eAnimation = eAnimation;
         this.activateMoment = ActivateMoment.UnitSelection;
     }
+
+
+
+
 
 
     /* Class methods */
@@ -201,7 +205,7 @@ public class Unit_Provoked {
                     if (ct.getTile().getUnitOnTile().getOwner() == gameState.getEnemyPlayer()) {
 
                         // Generate adjacent tiles to overlay
-                        ArrayList<Tile> adjacentTiles = gameState.getBoard().adjTiles(ct.getTile());
+                        ArrayList<Tile> adjacentTiles = gameState.getBoard().adjacentTiles(ct.getTile());
 
                         // Relate all adjacent tiles with the classified tiles (find overlap)
                         for (ClassifiedTile ct2 : classifiedActionableTiles) {
@@ -279,8 +283,8 @@ public class Unit_Provoked {
         return targetType;
     }
 
-    public Call_IDs getCallID() {
-        return callID;
+    public ActivateMoment getActivateMoment() {
+        return activateMoment;
     }
 
     public EffectAnimation getEffectAnimation() {

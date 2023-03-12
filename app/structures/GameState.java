@@ -224,6 +224,15 @@ public class GameState {
 		}
 
 	}
+	public Player getEnemyPlayer() {
+
+		if (this.getRoundPlayer() == this.player1) {
+			return this.getPlayer2();
+		}
+		else {
+			return this.getPlayer1();
+		}
+	}
 
 	public ArrayList<Tile> getTileAdjustedRangeContainer() {
 		return tileAdjustedRangeContainer;
