@@ -114,18 +114,18 @@ public class CardClicked implements EventProcessor{
 							break;
 						}
 					}
-				}
-				System.out.println("Not hasAbility");
+				} else {
+					if (!cardOut) {
+						System.out.println("!CardOut: " + cardOut);
+						// Draw summonable tiles
+						ArrayList<Tile> summonableTiles = gameState.getBoard().allSummonableTiles(gameState.getRoundPlayer());
+						UpdateStatus.updateTiles(out, summonableTiles, 1);
 
-				if (!cardOut) {
-					System.out.println("!CardOut: " + cardOut);
-					// Draw summonable tiles
-					ArrayList<Tile> summonableTiles = gameState.getBoard().allSummonableTiles(gameState.getRoundPlayer());
-					UpdateStatus.updateTiles(out, summonableTiles, 1);
+					}
 				}
-
-				//a loop which checks that a card is a spell, then displays playable tiles depending on spell target
-				else if (clickedCard.getAssociatedClass() == Spell.class) {
+			}
+			//a loop which checks that a card is a spell, then displays playable tiles depending on spell target
+			else if (clickedCard.getAssociatedClass() == Spell.class) {
 					System.out.println("it's a Spell Card!");
 					//for spell targeting enemy units
 					if (AbilityToUnitLinkage.UnitAbility.get("" + clickedCard.getCardname()).get(0).getTargetType() == Monster.class && clickedCard.targetEnemy() == true) {
@@ -162,13 +162,14 @@ public class CardClicked implements EventProcessor{
 				System.out.println("Not enoughPayMana");
 			}
 
+		/**UnLock**/
+		gameState.userinteractionUnlock();
 
 		}
 
 
-		/**UnLock**/
-		gameState.userinteractionUnlock();
-	}
+
+
 
 
 }

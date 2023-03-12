@@ -165,6 +165,7 @@ public class Monster extends Unit{
     }
 
     public void setOwner(Player p) {
+
         owner = p;
     }
 

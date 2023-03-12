@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import structures.basic.*;
 import structures.basic.abilities.Ability;
+import structures.basic.abilities.AbilityToUnitLinkage;
 import structures.basic.abilities.Unit_Ranged;
 
 import java.io.File;
@@ -33,10 +34,20 @@ public class BasicObjectBuilders {
 	 * @param classtype
 	 * @return
 	 */
-	public static Card loadCard(String configurationFile, int id, Class<? extends Card> classtype) {
+	public static Card loadCard(String cardConfigFile, String unitConfigFile, int id, Class<? extends Card> classtype) {
 		try {
-			Card card = mapper.readValue(new File(configurationFile), classtype);
+			Card card = mapper.readValue(new File(cardConfigFile), classtype);
 			card.setId(id);
+			card.setConfigFile(unitConfigFile);
+
+			// Set ability data to be held in card for reference from AI etc
+			if(AbilityToUnitLinkage.UnitAbility.containsKey(card.getCardname())) {
+				card.setAbilityList(AbilityToUnitLinkage.UnitAbility.get(card.getCardname()));
+			}
+
+			// Set associated class type -- Monster only for this Builder
+			card.setAssociatedClass(Monster.class);
+
 			return card;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,6 +55,53 @@ public class BasicObjectBuilders {
 		}
 		return null;
 	}
+
+	// Alternative Builder for non-unit cards, overloaded method signature for easy use
+	// Config file here stores the card's config file (for Spell casting use)
+	public static Card loadCard(String cardConfigFile, int id, Class<? extends Card> classtype) {
+		try {
+			Card card = mapper.readValue(new File(cardConfigFile), classtype);
+			card.setId(id);
+			card.setConfigFile(cardConfigFile);
+
+			// Set ability data to be held in card for reference from AI etc
+			if(AbilityToUnitLinkage.UnitAbility.containsKey(card.getCardname())) {
+				card.setAbilityList(AbilityToUnitLinkage.UnitAbility.get(card.getCardname()));
+			}
+
+			// Set associated class type -- Spell only for this Builder
+			card.setAssociatedClass(Spell.class);
+			return card;
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return null;
+	}
+
+	// Alternative Builder for non-unit cards, overloaded method signature for easy use
+	// Config file here stores the card's config file (for Spell casting use)
+//	public static Card loadCard(String cardConfigFile, int id, Class<? extends Card> classtype) {
+//		try {
+//			Card card = mapper.readValue(new File(cardConfigFile), classtype);
+//			card.setId(id);
+//			card.setConfigFile(cardConfigFile);
+//
+//			// Set ability data to be held in card for reference from AI etc
+//			if(AbilityToUnitLinkage.UnitAbility.containsKey(card.getCardname())) {
+//				card.setAbilityList(AbilityToUnitLinkage.UnitAbility.get(card.getCardname()));
+//			}
+//
+//			// Set associated class type -- Spell only for this Builder
+//			card.setAssociatedClass(Spell.class);
+//
+//			return card;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//
+//		}
+//		return null;
+//	}
 	/**
 	 * This class produces a EffectAnimation object given a configuration
 	 * file. Configuration files can be found in the conf/gameconfs directory.
@@ -84,11 +142,11 @@ public class BasicObjectBuilders {
 	}
 
 	// Alternative Unit ObjectBuilder that uses the Monster constructor
-	public static Monster loadMonsterUnit(String u_configFile, Card statsRef, Player p, Class<? extends Monster> classType) {
+	public static Monster loadMonsterUnit(String configurationFile, Card statsRef, Player p, Class<? extends Monster> classType) {
 
 		try {
-			System.out.println("configFile name in objectbuilder is: "+ u_configFile);
-			Monster mUnit = mapper.readValue(new File(u_configFile), classType);
+			System.out.println("configFile name in objectbuilder is: "+configurationFile);
+			Monster mUnit = mapper.readValue(new File(configurationFile), classType);
 
 			// Set monster attributes from reference Card info
 			mUnit.setId(statsRef.getId());
@@ -99,7 +157,7 @@ public class BasicObjectBuilders {
 
 			// Set Player owner
 			mUnit.setOwner(p);
-
+			System.out.println("setMonsterOwner:" + p);
 			System.out.println("mUnit has name " + mUnit.getName());
 			System.out.println("mUnit has ID " + mUnit.getId());
 
@@ -127,13 +185,13 @@ public class BasicObjectBuilders {
 	}
 
 	// Adjusted Avatar ObjectBuilder to set ID/Name/Owner immediately after constructor/during construction
-	public static Avatar loadAvatar(String configFile, int id, Player p, Class<? extends Avatar> classType) {
+	public static Avatar loadAvatar(String configurationFile, int id, Player p, Class<? extends Avatar> classType) {
 
+		System.out.println("loadAvatar");
 		try {
-			Avatar unit = mapper.readValue(new File(configFile), classType);
+			Avatar unit = mapper.readValue(new File( configurationFile), classType);
 			unit.setId(id);
 			unit.setOwner(p);
-
 			if(p instanceof HumanPlayer) {
 				unit.setName("Human Avatar");
 			} else {

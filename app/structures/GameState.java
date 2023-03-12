@@ -19,8 +19,8 @@ public class GameState {
 	private Board board;
 	private Player player1;
 	private Player player2;
-	private Unit humanAvatar;
-	private Unit aiAvatar;
+	private Avatar humanAvatar;
+	private Avatar aiAvatar;
 	private int roundNumber;
 	private Player roundPlayer;
 	private Hand humanHand;
@@ -39,10 +39,17 @@ public class GameState {
 		//set board
 		board = new Board();
 
+
 		// set players
 		player1 = new Player();
 		player2 = new Player();
 
+		humanAvatar = BasicObjectBuilders.loadAvatar(StaticConfFiles.humanAvatar, -1, player1, Avatar.class);
+		aiAvatar = BasicObjectBuilders.loadAvatar(StaticConfFiles.aiAvatar, -2, player2, Avatar.class);
+
+		System.out.println("human avatar owner : " + this.humanAvatar.getOwner());
+		System.out.println();
+		System.out.println("Computer avatar owner : " + this.aiAvatar.getOwner() );
 		//set deck
 		//手牌逻辑,玩家1从牌堆1抽，2从2抽
 
@@ -79,13 +86,13 @@ public class GameState {
 		return board;
 	}
 
-	public Unit getHumanAvatar() {
-		humanAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, -1, Unit.class);
+
+
+	public Avatar getHumanAvatar() {
 		return humanAvatar;
 	}
 
-	public Unit getAiAvatar() {
-		aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, -2, Unit.class);
+	public Avatar getAiAvatar() {
 		return aiAvatar;
 	}
 
@@ -243,6 +250,10 @@ public class GameState {
 	}
 
 
+	// Check if an Ability/external factor was used to alter unit move/attack range
+	public boolean useAdjustedMonsterActRange() {
+		return !this.getTileAdjustedRangeContainer().isEmpty();
+	}
 }
 
 

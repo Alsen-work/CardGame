@@ -1,6 +1,7 @@
 package structures.basic.abilities;
 
 import structures.GameState;
+import structures.basic.EffectAnimation;
 import structures.basic.Monster;
 public interface Ability {
 
@@ -9,4 +10,5 @@ public interface Ability {
     public boolean targetEnemy();
     public ActivateMoment getActivateMoment();
 
+    EffectAnimation getEffectAnimation();
 }

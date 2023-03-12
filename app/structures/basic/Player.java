@@ -76,4 +76,10 @@ public class Player {
 			return false;
 		}
 	}
+
+	//delete Mana , when use cards
+	public void loseMana(int loseMana) {
+		this.mana = mana - loseMana;
+	}
+
 }

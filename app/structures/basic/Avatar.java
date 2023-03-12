@@ -31,6 +31,7 @@ public class Avatar extends Monster {
 	}
 	
 	public void setOwner(Player p) {
+
 		this.owner = p;
 	}
 

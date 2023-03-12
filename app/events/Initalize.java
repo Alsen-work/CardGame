@@ -3,10 +3,11 @@ package events;
 import akka.actor.ActorRef;
 import com.fasterxml.jackson.databind.JsonNode;
 import commands.BasicCommands;
+import commands.UpdateStatus;
 import structures.GameState;
+import structures.basic.Avatar;
 import structures.basic.Board;
 import structures.basic.Tile;
-import structures.basic.Unit;
 
 /**
  * Indicates that both the core game loop in the browser is starting, meaning
@@ -26,6 +27,14 @@ public class Initalize implements EventProcessor {
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
+
+		/**===========================**/
+		gameState.userinteractionLock();
+		/**===========================**/
+
+
+
+
 		// hello this is a change
 
 		gameState.gameInitalised = true;
@@ -47,17 +56,14 @@ public class Initalize implements EventProcessor {
 		BasicCommands.addPlayer1Notification(out, "Click the EndTurn button to draw a hand to start the game", 5);
 
 
-
+		/**===========================**/
+		gameState.userinteractionUnlock();
+		/**===========================**/
 
 	}
 
 	private static void initBoard(ActorRef out, GameState gameState, JsonNode message) {
 		BasicCommands.addPlayer1Notification(out, "initBoard", 2);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 
 		Board gameBoard = gameState.getBoard();//gamestate里创建board并赋值给gameboard
 
@@ -67,58 +73,48 @@ public class Initalize implements EventProcessor {
 				BasicCommands.drawTile(out, gameBoard.getBoard()[i][j], 0);
 			}
 		}
+		UpdateStatus.threadSleep();
+
 
 	}
 	private static void initPlayer(ActorRef out, GameState gameState, JsonNode message) {
 
 		// drawUnit humanAvatar
 		BasicCommands.addPlayer1Notification(out, "drawUnit humanAvatar", 2);
-		Unit humanAvatar = gameState.getHumanAvatar();
+		Avatar humanAvatar = gameState.getHumanAvatar();
 		Tile tilehuman = gameState.getBoard().getTile(1, 2);
 		humanAvatar.setPositionByTile(tilehuman);
 		BasicCommands.drawUnit(out,humanAvatar, tilehuman);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		tilehuman.addUnit(humanAvatar);
+		UpdateStatus.threadSleep();
+
 		BasicCommands.addPlayer1Notification(out, "drawUnit humanAvatar attack", 2);
-		BasicCommands.setUnitAttack(out, humanAvatar, 2);
-		BasicCommands.setUnitHealth(out,humanAvatar, 2);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		BasicCommands.setUnitAttack(out, humanAvatar,  humanAvatar.getAttackValue());
+		BasicCommands.setUnitHealth(out,humanAvatar, humanAvatar.getHP());
+		UpdateStatus.threadSleep();
 
 		// drawUnit aiAvatar
 		BasicCommands.addPlayer1Notification(out, "drawUnit aiAvatar", 2);
-		Unit aiAvatar = gameState.getAiAvatar();
+		Avatar aiAvatar = gameState.getAiAvatar();
 		Tile tileAi = gameState.getBoard().getTile(7, 2);
 		aiAvatar.setPositionByTile(tileAi);
 		BasicCommands.drawUnit(out,aiAvatar, tileAi);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		tileAi.addUnit(aiAvatar);
+		UpdateStatus.threadSleep();
+
 		BasicCommands.addPlayer1Notification(out, "drawUnit aiAvatar attack", 2);
-		BasicCommands.setUnitAttack(out, aiAvatar, 2);
-		BasicCommands.setUnitHealth(out, aiAvatar, 2);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		BasicCommands.setUnitAttack(out, aiAvatar, aiAvatar.getAttackValue());
+		BasicCommands.setUnitHealth(out, aiAvatar, aiAvatar.getHP());
+		UpdateStatus.threadSleep();
 
 		// Set player health
 		BasicCommands.addPlayer1Notification(out, "Set player1 health", 2);
 		BasicCommands.setPlayer1Health(out, gameState.getPlayer1());
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		UpdateStatus.threadSleep();
 
 		BasicCommands.addPlayer1Notification(out, "Set player2 health", 2);
 		BasicCommands.setPlayer2Health(out, gameState.getPlayer2());
-		try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		UpdateStatus.threadSleep();
 
 
 

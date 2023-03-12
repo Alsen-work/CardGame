@@ -23,7 +23,7 @@ public class Board {
                 // 将该瓷砖标记为可用
                 board[y][x].free = true;
                 // 将该瓷砖上的单位设置为 null
-                // board[y][x].unitOnTile = null;
+                 board[y][x].unitOnTile = null;
 
             }
         }
@@ -35,6 +35,8 @@ public class Board {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 allTileList.add(board[y][x]);
+                System.out.print("getAllTilesList() board[" +y+"]["+x+"]");
+                System.out.println();
             }
         }
         return allTileList;
@@ -47,6 +49,8 @@ public class Board {
             for (int x = 0; x < width; x++) {
                 if ((board[y][x].getUnitOnTile() != null) && board[y][x].getUnitOnTile().getOwner() == p) {
                     tileList.addAll(this.adjacentFreeTiles(board[y][x]));
+                    System.out.print("allSummonableTiles(): "+ tileList);
+                    System.out.println();
                 }
             }
         }
@@ -58,12 +62,16 @@ public class Board {
         ArrayList<Tile> adjTiles = new ArrayList<Tile>();
         int x = tile.getTilex();
         int y = tile.getTiley();
+        System.out.print("tile.getTilex(); " +x);
+        System.out.println("tile.getTiley(); " +y);
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 && j == 0) continue; //不考虑当前位置
                 if (x + i < 0 || x + i >= width || y + j < 0 || y + j >= height) continue; //不考虑越界的位置
                 adjTiles.add(getTile(x + i, y + j));
+                System.out.print("adjacentTiles [" +(x + i)+"]["+ (y + i)+"]");
+                System.out.println();
             }
         }
 
@@ -75,6 +83,8 @@ public class Board {
     ArrayList<Tile> adjacentFreeTiles(Tile t) {
         ArrayList<Tile> adjFreeTiles = this.adjacentTiles(t);
         adjFreeTiles.removeIf(tile -> !(tile.isFree()));
+      //  System.out.print("adjacentFreeTiles ["+ adjFreeTiles+"]");
+        System.out.println();
         return adjFreeTiles;
 
     }
@@ -85,6 +95,9 @@ public class Board {
             for (int x = 0; x < width; x++) {
                 if (board[y][x].getUnitOnTile() == null) {
                     freeTilesList.add(board[y][x]);
+                    System.out.print("allFreeTiles() [" +(x)+"] ["+ (y)+"]");
+                    System.out.println();
+
                 }
             }
         }
@@ -213,13 +226,11 @@ public class Board {
     public Tile enemyAvatarTile(Player p, GameState g) {
         if (p instanceof HumanPlayer) {
             int x = g.getAiAvatar().getPosition().getTilex();
-            int y =
-                    g.getAiAvatar().getPosition().getTiley();
+            int y = g.getAiAvatar().getPosition().getTiley();
             return this.getTile(x, y);
         } else {
             int x = g.getHumanAvatar().getPosition().getTilex();
-            int y =
-                    g.getHumanAvatar().getPosition().getTiley();
+            int y = g.getHumanAvatar().getPosition().getTiley();
             return this.getTile(x, y);
         }
 
@@ -235,6 +246,78 @@ public class Board {
         }
 
         return avatarTile;
+    }
+
+    public ArrayList<Tile> unitAttackableTiles (int xpos, int ypos, int attackRange, int moveRange ){
+        Player p = this.getTile(xpos, ypos).getUnitOnTile().getOwner();
+
+        ArrayList<structures.basic.Tile> reachTiles;
+        HashSet <structures.basic.Tile> tileList = new HashSet<structures.basic.Tile>();
+
+        if (moveRange == 0) {
+            ArrayList<structures.basic.Tile> list = new ArrayList<structures.basic.Tile>(this.calcAttackRange(xpos, ypos, attackRange, p));
+            return list;
+        }
+
+        //get a list of all tiles that the unit can reach given their position and move range
+        //this includes both free and occupied tiles
+        reachTiles = this.reachableTiles(xpos, ypos, moveRange);
+
+        //iterate over the list of tiles that can be reached
+        //if the tile has an enemy unit it is added to the set (no duplicate values)
+        for (structures.basic.Tile t : reachTiles) {
+
+            if (!(t.isFree()) && t.getUnitOnTile().getOwner()!=p) tileList.add(t);
+        }
+
+        //remove all occupied tiles (enemy or friendly) from reachable tiles list
+        reachTiles.removeIf(t -> !(t.isFree()));
+
+        //the reachable tile list now only contains unoccupied tiles
+        //for each of these unoccupied tiles (that the unit could move to)
+        //the attack range (with that tile as origin) is calculated as a set
+        //the set is added to the set to returned (no duplicated values)
+        for(structures.basic.Tile t : reachTiles) {
+
+            HashSet <structures.basic.Tile> attRange = calcAttackRange(t.getTilex(), t.getTiley(), attackRange, p);
+            tileList.addAll(attRange);
+        }
+        ArrayList<structures.basic.Tile> list = new ArrayList<structures.basic.Tile>(tileList);
+        return list;
+    }
+    public HashSet<Tile> calcAttackRange(int xpos, int ypos, int attackRange, Player p){
+        HashSet<Tile> tileList = new HashSet<Tile>();
+
+        for (int i = xpos - attackRange; i <= (xpos + attackRange); i++) {
+
+            for (int j = ypos - attackRange; j <= (ypos + attackRange); j++) {
+
+
+                // Check if indices are within limits of the board
+                if ( (i <= (this.height - 1) && i >= 0) && (j <= (this.width - 1) && j >= 0)) {
+
+
+                    // This gets all tiles in a square around the centre Monster, up to a width-length of the attack range
+                    if(this.getTile(i, j).getUnitOnTile() != null && this.getTile(i, j).getUnitOnTile().getOwner() != p) {
+                        tileList.add(this.getTile(i, j));
+                    }
+
+                }
+            }
+        }
+        return tileList;
+    }
+
+    public ArrayList<Monster> friendlyUnitList (Player p){
+        ArrayList<Monster> monsterList = new ArrayList<Monster>();
+        for (int i = 0; i <board.length; i++) {
+            for (int k =0; k<board[0].length; k++) {
+                if (board[i][k].getUnitOnTile() != null && board[i][k].getUnitOnTile().getOwner()==p) 							{
+                    monsterList.add(board[i][k].getUnitOnTile());
+                }
+            }
+        }
+        return monsterList;
     }
     public Tile[][] getBoard() {
         return board;
@@ -259,6 +342,7 @@ public class Board {
     public Monster getUnitSelected(){
         return this.unitSelected;
     }
+
 
 
 

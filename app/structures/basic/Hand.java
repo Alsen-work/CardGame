@@ -88,7 +88,7 @@ public class Hand {
         if (i>=0) {
             handList.remove(i);
             setHandNum(handNum--);
-            System.out.println("remove card position is " + i );
+            System.out.println("remove handList position is " + i );
         }
     }
     public int getHandNum() {
