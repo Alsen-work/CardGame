@@ -1,10 +1,6 @@
 package structures;
 
-/**
- * Unused
- * @author Dr. Richard McCreadie
- *
- */
+
 public class User {
 
 	protected String username;

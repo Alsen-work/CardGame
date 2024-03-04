@@ -51,7 +51,6 @@ public class GameScreenController extends Controller {
 	 * @return
 	 */
 	public Result index(Http.Request request) {
-
 		return ok(views.html.gamescreen.render(request, null));
 	}
 	

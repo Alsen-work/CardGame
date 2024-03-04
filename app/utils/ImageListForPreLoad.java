@@ -9,19 +9,9 @@ import structures.basic.Card;
 import structures.basic.Tile;
 import structures.basic.Unit;
 
-/**
- * This is a utility class that builds a large set of image URLs
- * 
- * @author Dr. Richard McCreadie
- *
- */
+
 public class ImageListForPreLoad {
 
-	/**
-	 * This method returns a very big list of relative locations of the different images
-	 * that are needed by the game. Pixi.js will cache these on game load.
-	 * @return
-	 */
 	public static Set<String> getImageListForPreLoad() {
 		
 		Set<String> images = new HashSet<String>();

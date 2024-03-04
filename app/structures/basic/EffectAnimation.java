@@ -2,16 +2,6 @@ package structures.basic;
 
 import java.util.List;
 
-/**
- * This class is the base for an effect that can be played on a game
- * tile. It has a list of animation frames (animationTextures), and
- * a correction object that has information about centering the frames
- * on the tile. It has has an fps value that specifies how quickly to
- * play the animation.
- * 
- * @author Dr. Richard McCreadie
- *
- */
 public class EffectAnimation {
 
 	List<String> animationTextures;

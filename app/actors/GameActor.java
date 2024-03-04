@@ -22,7 +22,6 @@ import events.UnitStopped;
 import play.libs.Json;
 import structures.GameState;
 import utils.ImageListForPreLoad;
-import play.libs.Json;
 
 /**
  * The game actor is an Akka Actor that receives events from the user front-end UI (e.g. when 
@@ -33,19 +32,11 @@ import play.libs.Json;
  * connection to back-end services (on load of the game web page).
  * @author Dr. Richard McCreadie
  *
- * * 游戏行为体是一个Akka行为体，它接收来自用户前端用户界面的事件（例如，当
- *  * 用户点击棋盘）通过websocket连接。当一个事件到来时，
- *  * processMessage()方法被调用，它可以被用来对事件做出反应。
- *  游戏角色也包括一个ActorRef对象，它可以用来向用户界面发出命令，
- *  以改变用户看到的东西。GameActor是在用户浏览器创建一个websocket与后端服务的连接（在游戏网页加载时）。
- *  * @作者 Richard McCreadie博士
- *  *
- *  */
-
+ */
 public class GameActor extends AbstractActor {
 
 	private ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to turn java objects to Strings
-	private ActorRef out; // The ActorRef can be used to send messages to the front-end
+	private ActorRef out; // The ActorRef can be used to send messages to the front-end UI
 	private Map<String,EventProcessor> eventProcessors; // Classes used to process each type of event
 	private GameState gameState; // A class that can be used to hold game state information
 
@@ -53,9 +44,6 @@ public class GameActor extends AbstractActor {
 	 * Constructor for the GameActor. This is called by the GameController when the websocket
 	 * connection to the front-end is established.
 	 * @param out
-	 * 	 * GameActor的构造函数。当Websocket与前端的连接建立时，GameController会调用这个构造函数。
-	 * 	 * 与前端的连接建立时，由GameController调用。
-	 * 	 * @param out
 	 */
 	@SuppressWarnings("deprecation")
 	public GameActor(ActorRef out) {
@@ -118,7 +106,19 @@ public class GameActor extends AbstractActor {
 			// Unknown event type received
 			System.err.println("GameActor: Recieved unknown event type "+messageType);
 		} else {
-			processor.processEvent(out, gameState, message); // process the event
+			
+			if (gameState.playerinteractionLocked()) {
+				// Dont execute CardClicked if the UI is locked as this breaks the game
+				if (processor instanceof CardClicked) {
+				}	
+				else {
+					processor.processEvent(out, gameState, message); // process the event
+				}
+			}
+			else {
+				processor.processEvent(out, gameState, message); // process the event
+			}
+	
 		}
 	}
 	

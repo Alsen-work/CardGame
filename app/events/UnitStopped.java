@@ -6,18 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import structures.GameState;
 
-/**
- * Indicates that a unit instance has stopped moving. 
- * The event reports the unique id of the unit.
- * 
- * { 
- *   messageType = “unitStopped”
- *   id = <unit id>
- * }
- * 
- * @author Dr. Richard McCreadie
- *
- */
 public class UnitStopped implements EventProcessor{
 
 	@Override
@@ -25,6 +13,12 @@ public class UnitStopped implements EventProcessor{
 		
 		int unitid = message.get("id").asInt();
 		
+		// Unlock UI when unit stops moving
+		gameState.playerinteractionUnlock();
+		
+		// Set unit moving to false (this signals UnitCombined state)
+		gameState.setUnitMovingFlag(false);
+		System.out.println("User moving flag set to false");
 	}
 
 }

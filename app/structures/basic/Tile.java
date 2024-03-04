@@ -1,21 +1,13 @@
 package structures.basic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-/**
- * A basic representation of a tile on the game board. Tiles have both a pixel position
- * and a grid position. Tiles also have a width and height in pixels and a series of urls
- * that point to the different renderable textures that a tile might have.
- * 
- * @author Dr. Richard McCreadie
- *
- */
-public class Tile {
+public class Tile implements Comparable<Tile>{
 
 	@JsonIgnore
 	private static ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to read java objects from a file
@@ -28,6 +20,11 @@ public class Tile {
 	int tilex;
 	int tiley;
 	
+	//attributes added//
+	boolean free;
+	Monster unitOnTile; 	
+	int score;
+
 	public Tile() {}
 	
 	public Tile(String tileTexture, int xpos, int ypos, int width, int height, int tilex, int tiley) {
@@ -40,6 +37,10 @@ public class Tile {
 		this.height = height;
 		this.tilex = tilex;
 		this.tiley = tiley;
+		
+		this.free = true;
+		this.unitOnTile = null;
+		this.score = 0;
 	}
 	
 	public Tile(List<String> tileTextures, int xpos, int ypos, int width, int height, int tilex, int tiley) {
@@ -51,6 +52,10 @@ public class Tile {
 		this.height = height;
 		this.tilex = tilex;
 		this.tiley = tiley;
+		
+		this.free = true;
+		this.unitOnTile = null;
+		this.score = 0;
 	}
 	public List<String> getTileTextures() {
 		return tileTextures;
@@ -94,7 +99,71 @@ public class Tile {
 	public void setTiley(int tiley) {
 		this.tiley = tiley;
 	}
+	public boolean isFree() {
+		return free; 
+	}
+	public Monster getUnitOnTile() {
+		return unitOnTile; 
+	}
 	
+	public void setScore(int d) {
+		this.score = d;
+	}
+
+
+	/**
+	 * The following method accepts a parameter of type Monster,
+	 * which could refer to either a Monster or an Avatar object.
+	 * Both methods first verify that the target tile is available
+	 * before attempting to add a monster to it. Similarly,
+	 * when attempting to remove a monster,
+	 * they check if there is actually a monster present on the tile
+	 * before proceeding with the removal process.
+	 * */
+
+
+	public boolean addUnit (Monster m) {
+		if (!(this.free) || !(this.unitOnTile==null)) {
+			return false;
+		}
+		else {
+			this.unitOnTile = m;
+			this.free = false;
+
+			m.setPositionByTile(this);
+			
+			return true;			
+		}
+	}
+
+	public boolean removeUnit () {
+		if (this.free || this.unitOnTile==null) return false;
+		else {
+			this.unitOnTile.setPosition(null);
+			this.free = true;
+			this.unitOnTile = null;
+			return true;
+		}
+	}
+	
+	@Override
+	public int compareTo(Tile o) {
+		if (this.getScore() > o.getScore()) return 1;
+		else if (this.getScore() < o.getScore()) return -1;
+		return 0;
+	}
+
+	public int getScore() {
+		return score;
+	}
+	
+	
+	public String toString() {
+		return "tile: " + this.tilex + " - " + this.tiley;
+	}
+
+
+
 	/**
 	 * Loads a tile from a configuration file
 	 * parameters.
@@ -113,7 +182,6 @@ public class Tile {
 		return null;
 		
 	}
-	
-	
-	
+
+
 }

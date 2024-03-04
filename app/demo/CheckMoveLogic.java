@@ -2,7 +2,6 @@ package demo;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
-import structures.basic.Card;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import utils.BasicObjectBuilders;
@@ -44,15 +43,6 @@ public class CheckMoveLogic {
 		// Move unit, alternative, vertical then horizontal
 		BasicCommands.moveUnitToTile(out, unit, tile, true);
 		unit.setPositionByTile(tile); 
-		
-		BasicCommands.addPlayer1Notification(out, "drawCard [1u]", 1);
-		Card hailstone_golem = BasicObjectBuilders.loadCard(StaticConfFiles.c_hailstone_golem, 0, Card.class);
-		BasicCommands.drawCard(out, hailstone_golem, 1, 0);
-		BasicCommands.drawCard(out, hailstone_golem, 2, 0);
-		BasicCommands.drawCard(out, hailstone_golem, 3, 0);
-		BasicCommands.drawCard(out, hailstone_golem, 4, 0);
-		BasicCommands.drawCard(out, hailstone_golem, 5, 0);
-		BasicCommands.drawCard(out, hailstone_golem, 6, 0);
 	}
 	
 }

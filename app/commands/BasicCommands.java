@@ -24,11 +24,6 @@ public class BasicCommands {
 
 	private static ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to turn java objects to Strings
 	
-	// An alternative class with a 'tell' implementation can be given if writing unit tests
-	// and need to have a null ActorRef. This should be null during normal operation.
-	public static DummyTell altTell = null;
-	
-	
 	/**
 	 * You can consider the contents of the user’s browser window a canvas that can be drawn upon. drawTile will draw 
 	 * the image of a board tile on the board. This command takes as input a Tile object and a visualisation mode (an 
@@ -37,10 +32,6 @@ public class BasicCommands {
 	 * @param out
 	 * @param tile
 	 * @param mode
-	 * 你可以把用户的浏览器窗口的内容看作是可以被绘制的画布。 drawTile将绘制
-	 * 	 * 棋盘上的一块棋子的图像。这个命令的输入是一个瓦片对象和一个可视化模式（一个
-	 * 	 * 整数），指定要渲染的瓦片的版本（每个瓦片都有多个版本，例如：正常与高亮）。
-	 * 	 * 每个瓦片都有多个版本，例如正常与高亮）。这个命令可以多次使用来改变一个瓦片的可视化模式。
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void drawTile(ActorRef out, Tile tile, int mode) {
@@ -49,8 +40,7 @@ public class BasicCommands {
 			returnMessage.put("messagetype", "drawTile");
 			returnMessage.put("tile", mapper.readTree(mapper.writeValueAsString(tile)));
 			returnMessage.put("mode", mode);
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -63,10 +53,6 @@ public class BasicCommands {
 	 * @param out
 	 * @param unit
 	 * @param tile
-	 * * drawUnit将在棋盘上绘制一个单位的精灵（该单位的图片及其攻击和健康值）。
-	 * 	 * 这个命令需要输入一个目标瓦片（主游戏网格的一个 "方块"）来放置单位的精灵。
-	 * 	 * 和单位的实例（它持有关于如何绘制该单位的必要信息）。
-	 *
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void drawUnit(ActorRef out, Unit unit, Tile tile) {
@@ -75,8 +61,7 @@ public class BasicCommands {
 			returnMessage.put("messagetype", "drawUnit");
 			returnMessage.put("tile", mapper.readTree(mapper.writeValueAsString(tile)));
 			returnMessage.put("unit", mapper.readTree(mapper.writeValueAsString(unit)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -88,9 +73,6 @@ public class BasicCommands {
 	 * @param out
 	 * @param unit
 	 * @param attack
-	 *  这条命令将一个单位的精灵下面的可视化攻击值改为0-20之间的数值。
-	 * 	 *和20之间。该命令接收了一个单元实例。相关的数值会从单位对象中读取。
-	 *
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void setUnitAttack(ActorRef out, Unit unit, int attack) {
@@ -99,8 +81,7 @@ public class BasicCommands {
 			returnMessage.put("messagetype", "setUnitAttack");
 			returnMessage.put("unit", mapper.readTree(mapper.writeValueAsString(unit)));
 			returnMessage.put("attack", attack);
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -112,9 +93,6 @@ public class BasicCommands {
 	 * @param out
 	 * @param unit
 	 * @param health
-	 * 这条命令将一个单位的精灵下面的可视化健康值改为0-20之间的值。
-	 * 	 *和20之间。该命令接收一个单元实例。相关的值从单元对象中读取。
-	 *
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void setUnitHealth(ActorRef out, Unit unit, int health) {
@@ -123,8 +101,7 @@ public class BasicCommands {
 			returnMessage.put("messagetype", "setUnitHealth");
 			returnMessage.put("unit", mapper.readTree(mapper.writeValueAsString(unit)));
 			returnMessage.put("health", health);
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -136,9 +113,6 @@ public class BasicCommands {
 	 * @param out
 	 * @param unit
 	 * @param tile
-	 *  这个命令将一个单元精灵从一个瓦片移动到另一个瓦片。它接收该单元的对象和目标瓦片。
-	 * 	 * 注意，这个命令将开始移动，可能需要多秒才能完成移动。
-	 *
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void moveUnitToTile(ActorRef out, Unit unit, Tile tile) {
@@ -147,8 +121,7 @@ public class BasicCommands {
 			returnMessage.put("messagetype", "moveUnitToTile");
 			returnMessage.put("unit", mapper.readTree(mapper.writeValueAsString(unit)));
 			returnMessage.put("tile", mapper.readTree(mapper.writeValueAsString(tile)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -162,10 +135,6 @@ public class BasicCommands {
 	 * @param yfirst
 	 * @param unit
 	 * @param tile
-	 *  这个命令将一个单元精灵从一个瓦片移动到另一个瓦片。它接收该单元的对象和目标瓦片。
-	 * 	 * 注意，这个命令将开始移动，可能需要多秒才能完成移动。
-	 * 	 * yfirst设置移动是否应该先垂直移动单元，然后再水平移动。
-	 * 	 *
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void moveUnitToTile(ActorRef out, Unit unit, Tile tile, boolean yfirst) {
@@ -175,8 +144,7 @@ public class BasicCommands {
 			returnMessage.put("yfirst", yfirst);
 			returnMessage.put("unit", mapper.readTree(mapper.writeValueAsString(unit)));
 			returnMessage.put("tile", mapper.readTree(mapper.writeValueAsString(tile)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -189,10 +157,6 @@ public class BasicCommands {
 	 * @param out
 	 * @param unit
 	 * @param animation
-	 * * 这个命令让一个单位播放指定的动画。它接收了单元对象，该对象
-	 * 	 * 包含所有播放动画所需的数据，以及一个UnitAnimation，它指定了
-	 * 	 * 切换到哪个动画。
-	 *
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void playUnitAnimation(ActorRef out, Unit unit, UnitAnimationType animationToPlay) {
@@ -204,8 +168,7 @@ public class BasicCommands {
 			returnMessage.put("messagetype", "playUnitAnimation");
 			returnMessage.put("unit", mapper.readTree(mapper.writeValueAsString(unit)));
 			returnMessage.put("animation", animationToPlay.toString());
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -216,9 +179,6 @@ public class BasicCommands {
 	 * This will delete a unit instance from the board. It takes as input the unit object of the unit.
 	 * @param out
 	 * @param unit
-	 * 这将从棋盘上删除一个单元实例。它接受该单元的单元对象作为输入。
-	 * 	 * @param out
-	 * 	 * @param unit
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void deleteUnit(ActorRef out, Unit unit) {
@@ -226,8 +186,7 @@ public class BasicCommands {
 			ObjectNode returnMessage = Json.newObject();
 			returnMessage.put("messagetype", "deleteUnit");
 			returnMessage.put("unit", mapper.readTree(mapper.writeValueAsString(unit)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -239,10 +198,6 @@ public class BasicCommands {
 	 * object.
 	 * @param out
 	 * @param player
-	 * * 该命令将玩家信息卡中的可视化健康值改为0到20之间的数值。
-	 * 	 * 和20之间。该命令接收了一个基本玩家实例。相关的数值从基本玩家中读取
-	 * 	 *对象。
-	 *
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void setPlayer1Health(ActorRef out, Player player) {
@@ -250,8 +205,7 @@ public class BasicCommands {
 			ObjectNode returnMessage = Json.newObject();
 			returnMessage.put("messagetype", "setPlayer1Health");
 			returnMessage.put("player", mapper.readTree(mapper.writeValueAsString(player)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -263,12 +217,6 @@ public class BasicCommands {
 	 * object.
 	 * @param out
 	 * @param player
-	 *  这条命令将玩家信息卡中的可视化健康值改为0-20之间的数值。
-	 * 	 *和20之间。该命令接收了一个基本玩家实例。相关的值从基本玩家中读取
-	 * 	 *对象。
-	 * 	 * @param out
-	 * 	 * @param player
-	 *
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void setPlayer2Health(ActorRef out, Player player) {
@@ -276,8 +224,7 @@ public class BasicCommands {
 			ObjectNode returnMessage = Json.newObject();
 			returnMessage.put("messagetype", "setPlayer2Health");
 			returnMessage.put("player", mapper.readTree(mapper.writeValueAsString(player)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -289,11 +236,6 @@ public class BasicCommands {
 	 * object.
 	 * @param out
 	 * @param player
-	 * * 该命令将玩家信息卡中的可视化法力值改为0-9之间的数值。
-	 * 	 * 和9之间。该命令接收了一个基本玩家实例。相关的值从基本玩家中读取
-	 * 	 * 对象。
-	 * 	 * @param out
-	 * 	 * @param player
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void setPlayer1Mana(ActorRef out, Player player) {
@@ -301,8 +243,7 @@ public class BasicCommands {
 			ObjectNode returnMessage = Json.newObject();
 			returnMessage.put("messagetype", "setPlayer1Mana");
 			returnMessage.put("player", mapper.readTree(mapper.writeValueAsString(player)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -321,8 +262,7 @@ public class BasicCommands {
 			ObjectNode returnMessage = Json.newObject();
 			returnMessage.put("messagetype", "setPlayer2Mana");
 			returnMessage.put("player", mapper.readTree(mapper.writeValueAsString(player)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -336,10 +276,6 @@ public class BasicCommands {
 	 * @param card
 	 * @param position
 	 * @param mode
-	 * 该命令在玩家的手牌中显示一张牌。它需要输入一个手牌位置（1-6之间的数值），一个
-	 * 	 * 卡片（它是一个包含可视化卡片所需基本信息的对象）和一个可视化模式
-	 * 	 *（类似于瓦片）。这个命令可以多次发出，以改变一张牌的可视化模式。
-	 * 	 *
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void drawCard(ActorRef out, Card card, int position, int mode) {
@@ -349,8 +285,7 @@ public class BasicCommands {
 			returnMessage.put("card", mapper.readTree(mapper.writeValueAsString(card)));
 			returnMessage.put("position", position);
 			returnMessage.put("mode", mode);
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -360,17 +295,13 @@ public class BasicCommands {
 	 * This command deletes a card in the player’s hand. It takes as input a hand position (a value between 1-6).
 	 * @param out
 	 * @param position
-	 *  该命令删除玩家手中的一张牌。它需要输入一个手牌位置（1-6之间的数值）。
-	 * 	 * @param out
-	 * 	 * @param position
 	 */
 	public static void deleteCard(ActorRef out, int position) {
 		try {
 			ObjectNode returnMessage = Json.newObject();
 			returnMessage.put("messagetype", "deleteCard");
 			returnMessage.put("position", position);
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -382,11 +313,6 @@ public class BasicCommands {
 	 * @param out
 	 * @param effect
 	 * @param tile
-	 * 播放一个指定的效果动画（如爆炸），以一个特定的瓷砖为中心。它需要输入一个
-	 * 	 * EffectAnimation（一个包含渲染效果信息的对象）和一个目标瓦片。
-	 * 	 * @param out
-	 * 	 * @param effect
-	 * 	 * @param tile
 	 */
 	@SuppressWarnings({"deprecation"})
 	public static void playEffectAnimation(ActorRef out, EffectAnimation effect, Tile tile) {
@@ -395,8 +321,7 @@ public class BasicCommands {
 			returnMessage.put("messagetype", "playEffectAnimation");
 			returnMessage.put("effect", mapper.readTree(mapper.writeValueAsString(effect)));
 			returnMessage.put("tile", mapper.readTree(mapper.writeValueAsString(tile)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -416,8 +341,7 @@ public class BasicCommands {
 			returnMessage.put("messagetype", "addPlayer1Notification");
 			returnMessage.put("text", text);
 			returnMessage.put("seconds", displayTimeSeconds);
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -425,8 +349,6 @@ public class BasicCommands {
 	
 	/**
 	 * Plays a projectile fire animation between two tiles
-	 *  *在两块瓷砖之间播放射出的火焰动画
-	 *
 	 * @param out
 	 * @param effect
 	 * @param tile
@@ -440,8 +362,7 @@ public class BasicCommands {
 			returnMessage.put("tile", mapper.readTree(mapper.writeValueAsString(startTile)));
 			returnMessage.put("targetTile", mapper.readTree(mapper.writeValueAsString(targetTile)));
 			returnMessage.put("mode", mapper.readTree(mapper.writeValueAsString(mode)));
-			if (altTell!=null) altTell.tell(returnMessage);
-			else out.tell(returnMessage, out);
+			out.tell(returnMessage, out);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

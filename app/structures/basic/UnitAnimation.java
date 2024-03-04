@@ -1,15 +1,6 @@
 package structures.basic;
 
-/**
- * This contains information for playing a Unit's animation, e.g.
- * move, attack, or idle. One of these animations as a start and
- * end index in the animation frames array, an fps (indicating animation
- * speed) and whether that animation should loop (e.g. move does, attack
- * does not).
- * 
- * @author Dr. Richard McCreadie
- *
- */
+
 public class UnitAnimation {
 
 	int[] frameStartEndIndices;

@@ -2,14 +2,7 @@ package structures.basic;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- * Sprites when extracted are not full size (there is white space around the sprite). 
- * We need to correct for this as well as centre the sprite on the tile. This class
- * contains information to do this.
- * 
- * @author Dr. Richard McCreadie
- *
- */
+
 public class ImageCorrection {
 
 	double imgWidth;

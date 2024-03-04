@@ -1,10 +1,6 @@
 package structures.basic;
 
-/**
- * BigCard represents the expanded card version that that appears on mouse-over
- * @author Dr. Richard McCreadie
- *
- */
+
 public class BigCard {
 
 	int attack;

@@ -1,20 +1,6 @@
 package utils;
 
-/**
- * This is a utility class that just has short-cuts to the location of various
- * config files. 
- * 
- * IMPORTANT: Note the start letter for unit types is u_... while the start letter
- * for card types is c_...
- * * 这是一个实用的类，只是对各种不同的
- *  * 配置文件。
- *  *
- *  * 重要的是：注意单位类型的开头字母是u_...，而卡类型的开头字母是c_...。
- *  * 卡片类型的开头字母是c_...
- * 
- * @author Dr. Richard McCreadie
- *
- */
+
 public class StaticConfFiles {
 
 	// Board Pieces
@@ -74,5 +60,7 @@ public class StaticConfFiles {
 	public final static String f1_martyrdom = "conf/gameconfs/effects/f1_martyrdom.json";
 	public final static String f1_projectiles = "conf/gameconfs/effects/f1_projectiles.json";
 	public final static String f1_summon = "conf/gameconfs/effects/f1_summon.json";
+	
+	
 	
 }

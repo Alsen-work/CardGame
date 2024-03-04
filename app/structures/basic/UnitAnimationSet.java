@@ -2,19 +2,7 @@ package structures.basic;
 
 import java.util.List;
 
-/**
- * This is a storage structure for the different animations that a
- * Unit can perform. A Unit has 6 possible animation states:
- *  - idle
- *  - death
- *  - attack
- *  - move
- *  - channel
- *  - hit
- *  
- * @author Dr. Richard McCreadie
- *
- */
+
 public class UnitAnimationSet {
 
 	List<String> allFrames;

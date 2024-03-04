@@ -3,18 +3,6 @@ package structures.basic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * This is a representation of a Unit on the game board.
- * A unit has a unique id (this is used by the front-end.
- * Each unit has a current UnitAnimationType, e.g. move,
- * or attack. The position is the physical position on the
- * board. UnitAnimationSet contains the underlying information
- * about the animation frames, while ImageCorrection has
- * information for centering the unit on the tile. 
- * 
- * @author Dr. Richard McCreadie
- *
- */
 public class Unit {
 
 	@JsonIgnore
@@ -25,7 +13,7 @@ public class Unit {
 	Position position;
 	UnitAnimationSet animations;
 	ImageCorrection correction;
-	
+
 	public Unit() {}
 	
 	public Unit(int id, UnitAnimationSet animations, ImageCorrection correction) {
@@ -107,5 +95,7 @@ public class Unit {
 		position = new Position(tile.getXpos(),tile.getYpos(),tile.getTilex(),tile.getTiley());
 	}
 	
+	// To do:
+	// Add attribute modifiers
 	
 }

@@ -1,17 +1,5 @@
 package structures.basic;
 
-/**
- * A mini-card is a visualisation of the card in a small square form factor
- * in the player's hand. It has a series of components. cardTextures are the
- * 'backing' image behind the sprite animation. animationFrames are the frames
- * if the unit/spell animation. fps is the speed at which to play the unit/spell
- * animation. index is the frame index in animationFrames when wanting a 'still'
- * version (non-highlighted).
- * 
- * 
- * @author Dr. Richard McCreadie
- *
- */
 public class MiniCard {
 
 	String[] cardTextures;

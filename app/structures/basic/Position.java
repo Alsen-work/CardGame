@@ -1,14 +1,6 @@
 package structures.basic;
 
-/**
- * This contains the positional information for a unit
- * that is sitting on a tile. tilex/y are the index position
- * of the tile the unit is sitting upon. x/ypos are the pixel
- * position of the unit.
- * 
- * @author Dr. Richard McCreadie
- *
- */
+
 public class Position {
 
 	int xpos;
@@ -48,6 +40,10 @@ public class Position {
 	}
 	public void setTiley(int tilexy) {
 		this.tiley = tilexy;
+	}
+	
+	public Tile getTile(Board board) {
+		return board.getTile(tilex, tiley);
 	}
 	
 	
