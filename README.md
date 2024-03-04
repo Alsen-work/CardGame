@@ -87,32 +87,32 @@ filetree
 • Description (affects or ability descriptions)
 • Resource cost (what is needed to play the card)
 • Attack (if a creature, how much damage does it do when attacking)
-• Health (if a creature, how much damage in total will it need to take before being destroyed
+• Health (if a creature, how much damage in total will it need to take before being destroyed  
 
 **Unit Movement**
 • During a turn where the unit started on the board that turn (or has the rush ability), can make a single
 move
 • A unit by default can move two tiles in any of the four cardinal directions or one tile diagonally
-• Units cannot leave the board
+• Units cannot leave the board  
 **Attacking**
 • Either before or after a move the a unit can attack an enemy unit
 • A unit by default can attack any enemy unit in an adjacent tile
 • Units can attack diagonally
-• If a unit attacks and has not moved, it forfeits its ability to move
+• If a unit attacks and has not moved, it forfeits its ability to move  
 **Dealing Damage**
 • When a unit attacks, it reduces its defending targets health by a number equal to the attacking unit’s attack statistic
 • If the defender survives (has more than 0 health), the defending unit then counter-attacks*, reducing the attacking units health by the defending units attack statistic
-• *assuming its in range without needing to move
+• *assuming its in range without needing to move  
 **Playing Cards**
 • At any point during the active player’s turn they can play a card
 • To play a card, they need to have sufficient resource (mana) and have one or more valid targets
 • Playing a card often requires targeting a tile on the board
 • The majority of cards are creature cards, i.e. they summon a unit on the board
-• Units can be summoned on any adjacent tile to a friendly unit
+• Units can be summoned on any adjacent tile to a friendly unit  
 **Spells**
 • Spells are a catch-all term for cards that do not summon units
 • They will usually target a friendly or enemy unit on the board
-• The card description specifies what happens when the card is played and valid target groups (if any)
+• The card description specifies what happens when the card is played and valid target groups (if any)  
 ```
 How does counter-attacking work?
 
