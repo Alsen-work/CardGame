@@ -146,3 +146,6 @@ Can multiple units act in a turn?
 -   Yes
 ```
 
+
+# Screenshots
+![image](images/eg1.png)  ![image](images/eg2.png)  ![image](images/eg3.png)
