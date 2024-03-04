@@ -4,8 +4,8 @@
 # MSc IT+ Masters Team Project 
 The goal of this software development project is to produce an online ‘tactical’ card game which combines card-game mechanics with a chess-like board. **The project uses Java to develop the core back-end service in Java that manages and progresses the game as the player takes actions in a Web browser.** The final product should enable a human player to complete a game with a (semi-)intelligent AI opponent.
 
-**Project duration:** January 9th, 2023 - 10th March, 2023
-**Project Members**: Bingcen Luo, Peiyuan Shi, Haoyang Yu, Yiming Zhou, Jiasong Liu
+**Project duration:** January 9th, 2023 - 10th March, 2023  
+**Project Members**: Bingcen Luo, Peiyuan Shi, Haoyang Yu, Yiming Zhou, Jiasong Liu  
 **Tutor:** Dr Richard McCreadie
 ***
 
